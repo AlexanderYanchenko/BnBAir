@@ -8,10 +8,10 @@ namespace BnBAir.DAL.Repositories
 {
     public class GenericRepository<T> : IRepository<T> where T : class
     {
-        protected ReservationContext _db;
-        protected DbSet<T> _dbSet;
+        private ReservationContext _db;
+        private DbSet<T> _dbSet;
 
-        public GenericRepository(ReservationContext db, DbSet<T> dbSet)
+        protected GenericRepository(ReservationContext db, DbSet<T> dbSet)
         {
             _db = db;
             _dbSet = dbSet;
