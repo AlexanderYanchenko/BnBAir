@@ -12,7 +12,7 @@ namespace BnBAir.DAL.Repositories
         private GuestRepository _guestRepository;
         private ReservationRepository _reservationRepository;
         private RoomRepository _roomRepository;
-        
+        private bool _disposed = false;
         public BnBAirUW(DbContextOptions<ReservationContext> options)
         {
             _db = new ReservationContext(options);
@@ -90,6 +90,12 @@ namespace BnBAir.DAL.Repositories
         
         public void Dispose()
         {
+            if (!this._disposed)
+            {
+                _db.Dispose();
+            }
+
+            this._disposed = true;
         }
         
     }
