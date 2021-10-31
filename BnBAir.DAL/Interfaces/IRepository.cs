@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BnBAir.BLL.Interfaces
+namespace BnBAir.DAL.Interfaces
 {
     public interface IRepository<T> where T : class
     {

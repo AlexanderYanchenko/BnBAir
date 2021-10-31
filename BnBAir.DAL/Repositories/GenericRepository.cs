@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using BnBAir.BLL.Interfaces;
 using BnBAir.DAL.EF;
+using BnBAir.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace BnBAir.DAL.Repositories
 {
     public class GenericRepository<T> : IRepository<T> where T : class
     {
-        private ReservationContext _db;
-        private DbSet<T> _dbSet;
+        private readonly ReservationContext _db;
+        private readonly DbSet<T> _dbSet;
 
         protected GenericRepository(ReservationContext db, DbSet<T> dbSet)
         {
