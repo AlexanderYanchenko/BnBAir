@@ -11,5 +11,6 @@ namespace BnBAir.API.Controllers
         public CategoryController(IService<CategoryDTO> dbService) : base(dbService)
         {
         }
+        
     }
 }

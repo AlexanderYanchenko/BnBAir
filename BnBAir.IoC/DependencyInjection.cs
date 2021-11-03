@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+
 namespace BnBAir.IoC
 {
     public class DependencyInjection
@@ -33,4 +34,5 @@ namespace BnBAir.IoC
                 .AddScoped<IService<RoomDTO>, RoomService>();
         }
     }
+    
 }
