@@ -11,5 +11,6 @@ namespace BnBAir.DAL.Interfaces
          IRepository<Reservation> Reservations { get;}
          IRepository<Room> Rooms { get;}
 
+         void Save();
     }
 }

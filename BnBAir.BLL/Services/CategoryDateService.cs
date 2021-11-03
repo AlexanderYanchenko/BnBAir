@@ -16,15 +16,7 @@ namespace BnBAir.BLL.Services
         {
             this._db = db;
         }
-
-        public void Create(CategoryDateDTO model)
-        {
-            var mapper = CreateMapper();
-
-            var categoryDate = mapper.Map<CategoryDateDTO, CategoryDate>(model);
-            _db.CategoryDates.Create(categoryDate);
-        }
-
+        
         public List<CategoryDateDTO> Get()
         {
             var mapper = CreateMapper();
@@ -36,25 +28,39 @@ namespace BnBAir.BLL.Services
             var mapper = CreateMapper();
             return mapper.Map<CategoryDate, CategoryDateDTO>(_db.CategoryDates.GetById(id));
         }
+        public void Create(CategoryDateDTO model)
+        {
+            var mapper = CreateMapper();
+
+            var categoryDate = mapper.Map<CategoryDateDTO, CategoryDate>(model);
+            _db.CategoryDates.Create(categoryDate);
+        }
 
         public void Update(CategoryDateDTO model)
         {
             var mapper = CreateMapper(); 
             var categoryDate = mapper.Map<CategoryDateDTO, CategoryDate>(model);
             _db.CategoryDates.Update(categoryDate);
+            _db.Save();
         }
 
-        public void DeleteCategoryDate(CategoryDateDTO model)
+        public void Delete(CategoryDateDTO model)
         {
             var mapper = CreateMapper();
             var categoryDate = mapper.Map<CategoryDateDTO, CategoryDate>(model);
-            _db.CategoryDates.Update(categoryDate);
+            _db.CategoryDates.Delete(categoryDate.CategoryId);
+            _db.Save();
         }
         private static IMapper CreateMapper()
         {
              var mapper = new MapperConfiguration(cfg
                 => cfg.CreateMap<CategoryDate, CategoryDateDTO>()).CreateMapper();
              return mapper;
+        }
+
+        public void Dispose()
+        {
+            _db?.Dispose();
         }
     }
 }

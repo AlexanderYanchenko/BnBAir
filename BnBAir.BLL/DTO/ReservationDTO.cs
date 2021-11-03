@@ -1,4 +1,5 @@
 ﻿using System;
+using BnBAir.BLL.Interfaces;
 using BnBAir.DAL.Enitities;
 
 namespace BnBAir.BLL.DTO
