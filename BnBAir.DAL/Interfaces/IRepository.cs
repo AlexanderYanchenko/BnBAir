@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using BnBAir.DAL.Enitities;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace BnBAir.DAL.Interfaces
 {

@@ -6,9 +6,7 @@ namespace BnBAir.DAL.Enitities
     {
         public Guid RoomId { get; set; }
         public int Number { get; set; }
-
-        public Guid CategoryId { get; set; }
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
 
         public Room()
         {

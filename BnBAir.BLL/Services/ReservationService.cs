@@ -47,7 +47,7 @@ namespace BnBAir.BLL.Services
         public void Delete(ReservationDTO model)
         {
             var reservation = _mapper.Map<ReservationDTO, Reservation>(model);
-            _db.Guests.Delete(reservation.GuestId);
+            _db.Guests.Delete(reservation.Guest.GuestId);
             _db.Save();
         }
 

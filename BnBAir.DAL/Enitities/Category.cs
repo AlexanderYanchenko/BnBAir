@@ -10,11 +10,9 @@ namespace BnBAir.DAL.Enitities
         public string Name { get; set; }
         public int Bed { get; set; }
 
-        public Guid RoomId { get; set; }
-        public ICollection<Room> Rooms { get; set; }
+        public virtual ICollection<Room> Rooms { get; set; } = new List<Room>();
 
-        public Guid CategoryDateId { get; set; }
-        public CategoryDate CategoryDates { get; set; }
+        public virtual ICollection<CategoryDate> CategoryDates { get; set; } = new List<CategoryDate>();
         
         
         public Category()

@@ -5,6 +5,7 @@ using BnBAir.BLL.DTO;
 using BnBAir.BLL.Interfaces;
 using BnBAir.DAL.Enitities;
 using BnBAir.DAL.Interfaces;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace BnBAir.BLL.Services
 {
@@ -28,8 +29,7 @@ namespace BnBAir.BLL.Services
         {
             return _mapper.Map<Guest, GuestDTO>(_db.Guests.GetById(id));
         }
-
-
+        
         public void Update(GuestDTO model)
         {
             var guest = _mapper.Map<GuestDTO, Guest>(model);

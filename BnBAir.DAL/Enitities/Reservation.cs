@@ -10,11 +10,9 @@ namespace BnBAir.DAL.Enitities
         public bool CheckIn { get; set; }
         public bool CheckOut { get; set; }
         
-        public Guid GuestId { get; set; }
-        public Guest Guest { get; set; }
-
-        public Guid RoomId { get; set; }
-        public Room Room { get; set; }
+        public virtual Guest Guest { get; set; }
+        
+        public virtual Room Room { get; set; }
 
 
         public Reservation()

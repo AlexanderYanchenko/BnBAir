@@ -12,78 +12,83 @@ namespace BnBAir.DAL.InitializeData
         {
             if (!context.CategoryDates.Any())
             {
-                context.CategoryDates.Add(new CategoryDate()
-                {
-                   StartDate = new DateTime(2021,10,25),
-                   EndDate = new DateTime(2022,05,24),
-                   Price = 300
-                });
-                
-                context.CategoryDates.Add(new CategoryDate()
-                {
-                    StartDate = new DateTime(2021,07,15),
-                    EndDate = new DateTime(2022,06,10),
-                    Price = 500
-                });
-                context.SaveChanges();
-                
-                
-                context.Categories.Add(new Category()
+                Category oneBed = new Category()
                 {
                     Bed = 1,
                     Name = "Однокомнатный",
-                    CategoryDateId = context.CategoryDates.OrderBy(c=>c.CategoryDateId).First().CategoryDateId
-                });
-                context.Categories.Add(new Category()
+                } ;
+                Category twoBed = new Category()
                 {
                     Bed = 2,
                     Name = "Двухкомнатный",
-                    CategoryDateId = context.CategoryDates.OrderBy(c=>c.CategoryDateId).Last().CategoryDateId
-                });
+                };
+                context.Categories.Add(oneBed);
+                context.Categories.Add(twoBed);
                 context.SaveChanges();
                 
+                CategoryDate categoryDate1 = new CategoryDate()
+                {
+                    StartDate = new DateTime(2021, 10, 25),
+                    EndDate = new DateTime(2022, 05, 24),
+                    Price = 300,
+                    Category = oneBed
+                };
+                CategoryDate categoryDate2 = new CategoryDate()
+                {
+                    StartDate = new DateTime(2021, 07, 15),
+                    EndDate = new DateTime(2022, 06, 10),
+                    Price = 500,
+                    Category = twoBed
+                };
                 
-                context.Rooms.Add(new Room()
+                context.CategoryDates.Add(categoryDate1);
+                context.CategoryDates.Add(categoryDate2);
+                context.SaveChanges();
+
+                Room room1 = new Room()
                 {
                     Number = 1,
-                    CategoryId = context.Categories.OrderBy(c=>c.CategoryId).First().CategoryId,
-                });
-                context.Rooms.Add(new Room()
+                    Category = oneBed
+                };
+                Room room2 = new Room()
                 {
                     Number = 2,
-                    CategoryId = context.Categories.OrderBy(c=>c.CategoryId).First().CategoryId,
-                });
-                context.Rooms.Add(new Room()
+                    Category = twoBed
+                };
+                Room room3 = new Room()
                 {
                     Number = 3,
-                    CategoryId = context.Categories.OrderBy(c=>c.CategoryId).Last().CategoryId,
-                });
+                    Category = twoBed
+                };
+                context.Rooms.Add(room1);
+                context.Rooms.Add(room2);
+                context.Rooms.Add(room3);
                 context.SaveChanges();
-                
-                
-                context.Guests.Add(new Guest()
+
+                Guest tom = new Guest()
                 {
                     FirstName = "Tom",
                     LastName = "Mot",
                     Patronymic = "Tommot",
                     BirthDate = new DateTime(2001,01,01),
                     Document = "TM200300"
-                });
-                context.Guests.Add(new Guest()
+                };
+                Guest rick = new Guest()
                 {
                     FirstName = "Rick",
                     LastName = "Kcir",
                     Patronymic = "Rickkcir",
                     BirthDate = new DateTime(2002,02,02),
                     Document = "TM300400"
-                });
+                };
+                context.Guests.Add(tom);
+                context.Guests.Add(rick);
                 context.SaveChanges();
-
                 
                 context.Reservations.Add(new Reservation()
                 {
-                    GuestId = context.Guests.OrderBy(g=>g.GuestId).First().GuestId,
-                    RoomId = context.Rooms.OrderBy(r=>r.RoomId).First().RoomId,
+                    Guest = tom,
+                    Room = room1,
                     StartDate = new DateTime(2021,11,05),
                     EndDate = new DateTime(2021,12,02),
                     CheckIn = false,
@@ -91,14 +96,16 @@ namespace BnBAir.DAL.InitializeData
                 });
                 context.Reservations.Add(new Reservation()
                 {
-                    GuestId = context.Guests.OrderBy(g=>g.GuestId).Last().GuestId,
-                    RoomId = context.Rooms.OrderBy(r=>r.RoomId).Last().RoomId,
+                    Guest = rick,
+                    Room = room2,
                     StartDate = new DateTime(2021,11,09),
                     EndDate = new DateTime(2021,11,12),
                     CheckIn = false,
                     CheckOut = false
                 });
                 context.SaveChanges();
+                
+                
             }
         }
     }

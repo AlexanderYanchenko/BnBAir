@@ -10,8 +10,8 @@ namespace BnBAir.DAL.Enitities
         public DateTime EndDate { get; set; }
         public decimal Price { get; set; }
 
-        public Guid CategoryId { get; set; }
-        public ICollection<Category> Categories { get; set; }
+        public virtual Category Category { get; set; }
+
         
         public CategoryDate()
         {

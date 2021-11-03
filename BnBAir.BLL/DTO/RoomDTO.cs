@@ -7,8 +7,6 @@ namespace BnBAir.BLL.DTO
     {
         public Guid RoomId { get; set; }
         public int Number { get; set; }
-
-        public Guid CategoryId { get; set; }
-        public CategoryDTO Category { get; set; }
+        public virtual Category Category { get; set; }
     }
 }

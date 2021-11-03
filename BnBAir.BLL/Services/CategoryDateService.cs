@@ -48,7 +48,7 @@ namespace BnBAir.BLL.Services
         {
             var mapper = CreateMapper();
             var categoryDate = mapper.Map<CategoryDateDTO, CategoryDate>(model);
-            _db.CategoryDates.Delete(categoryDate.CategoryId);
+            _db.CategoryDates.Delete(categoryDate.CategoryDateId);
             _db.Save();
         }
         private static IMapper CreateMapper()

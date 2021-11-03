@@ -11,9 +11,8 @@ namespace BnBAir.DAL.Enitities
         public string Patronymic { get; set; }
         public DateTime BirthDate { get; set; }
         public string Document { get; set; }
-        
-        public Guid ReservationId { get; set; }
-        public ICollection<Reservation> Reservations { get; set; }
+
+        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
         public Guest()
         {

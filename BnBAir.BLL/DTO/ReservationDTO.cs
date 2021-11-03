@@ -12,11 +12,8 @@ namespace BnBAir.BLL.DTO
         public bool CheckIn { get; set; }
         public bool CheckOut { get; set; }
         
-        public Guid GuestId { get; set; }
-        public GuestDTO Guest { get; set; }
-
-        public Guid RoomId { get; set; }
-        public RoomDTO Room { get; set; }
+        public virtual Guest Guest { get; set; }
+        public virtual Room Room { get; set; }
 
     }
 }
