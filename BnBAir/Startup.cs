@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BnBAir.DAL.EF;
+using BnBAir.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -22,13 +23,15 @@ namespace BnBAir
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ReservationContext>(options => options.UseSqlServer(connection));
+            DependencyInjection dependencyInjection = new DependencyInjection(Configuration);
+            dependencyInjection.InjectDependencies(services);
             services.AddControllers();
         }
 

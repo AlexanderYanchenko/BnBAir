@@ -19,6 +19,7 @@
     <ItemGroup>
       <ProjectReference Include="..\BnBAir.BLL\BnBAir.BLL.csproj" />
       <ProjectReference Include="..\BnBAir.DAL\BnBAir.DAL.csproj" />
+      <ProjectReference Include="..\BnBAir.IoC\BnBAir.IoC.csproj" />
     </ItemGroup>
 
     <ItemGroup>
