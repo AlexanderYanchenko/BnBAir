@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using BnBAir.DAL.Enitities;
 
@@ -13,5 +14,6 @@ namespace BnBAir.BLL.DTO
         public virtual ICollection<Room> Rooms { get; set; }
 
         public virtual ICollection<CategoryDate> CategoryDates { get; set; }
+        
     }
 }

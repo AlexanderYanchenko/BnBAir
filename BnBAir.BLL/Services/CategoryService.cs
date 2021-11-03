@@ -53,7 +53,7 @@ namespace BnBAir.BLL.Services
         private static IMapper CreateMapper()
         {
             var mapper = new MapperConfiguration(cfg
-                => cfg.CreateMap<CategoryDate, CategoryDateDTO>()).CreateMapper();
+                => cfg.CreateMap<Category, CategoryDTO>()).CreateMapper();
             return mapper;
         }
 

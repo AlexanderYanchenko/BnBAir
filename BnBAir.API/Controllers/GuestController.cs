@@ -1,33 +1,15 @@
-﻿using System;
-using System.Linq;
-using BnBAir.BLL.DTO;
+﻿using BnBAir.BLL.DTO;
 using BnBAir.BLL.Interfaces;
-using BnBAir.DAL.Enitities;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BnBAir.Controllers
+namespace BnBAir.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class GuestController : ControllerBase
+    public class GuestController : GenericController<GuestDTO>
     {
-        private readonly IService<GuestDTO> _guestService;
-
-        public GuestController(IService<GuestDTO> guestService)
+        public GuestController(IService<GuestDTO> dbService) : base(dbService)
         {
-            _guestService = guestService;
-        }
-
-        [HttpGet]
-        public IActionResult GetGuests()
-        {
-            return Ok(_guestService.Get().ToList());
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult GetGuestById(Guid id)
-        {
-            return Ok(_guestService.GetById(id));
         }
     }
 }

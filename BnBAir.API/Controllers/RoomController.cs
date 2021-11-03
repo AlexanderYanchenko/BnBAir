@@ -6,9 +6,9 @@ namespace BnBAir.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoryDatesController : GenericController<CategoryDateDTO>
+    public class RoomController : GenericController<RoomDTO>
     {
-        public CategoryDatesController(IService<CategoryDateDTO> dbService) : base(dbService)
+        public RoomController(IService<RoomDTO> dbService) : base(dbService)
         {
         }
     }
