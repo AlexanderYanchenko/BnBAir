@@ -15,7 +15,6 @@ namespace BnBAir.DAL.EF
         public ReservationContext(DbContextOptions<ReservationContext> options) 
             :base(options)
         {
-            Database.EnsureCreated();
         }
     }
 }

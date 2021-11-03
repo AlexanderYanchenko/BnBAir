@@ -32,6 +32,7 @@ namespace BnBAir
             services.AddDbContext<ReservationContext>(options => options.UseSqlServer(connection));
             DependencyInjection dependencyInjection = new DependencyInjection(Configuration);
             dependencyInjection.InjectDependencies(services);
+            
             services.AddControllers();
         }
 

@@ -1,7 +1,9 @@
-﻿using BnBAir.BLL.DTO;
+﻿using AutoMapper;
+using BnBAir.BLL.DTO;
 using BnBAir.BLL.Interfaces;
 using BnBAir.BLL.Services;
 using BnBAir.DAL.EF;
+using BnBAir.DAL.Enitities;
 using BnBAir.DAL.Interfaces;
 using BnBAir.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
