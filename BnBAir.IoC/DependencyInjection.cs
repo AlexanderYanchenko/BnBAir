@@ -25,8 +25,12 @@ namespace BnBAir.IoC
         {
             var connection = _configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ReservationContext>(options => options.UseSqlServer(connection));
-            services.AddScoped<IBnBAirUW, BnBAirUW>();
-            services.AddScoped<IService<CategoryDateDTO>, CategoryDateService>();
+            services.AddScoped<IBnBAirUW, BnBAirUW>()
+                .AddScoped<IService<CategoryDateDTO>, CategoryDateService>()
+                .AddScoped<IService<CategoryDTO>, CategoryService>()
+                .AddScoped<IService<GuestDTO>, GuestService >()
+                .AddScoped<IService<ReservationDTO>, ReservationService>()
+                .AddScoped<IService<RoomDTO>, RoomService>();
         }
     }
 }
