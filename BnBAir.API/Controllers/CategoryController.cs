@@ -8,7 +8,7 @@ namespace BnBAir.API.Controllers
     [Route("api/[controller]")]
     public class CategoryController : GenericController<CategoryDTO>
     {
-        public CategoryController(IService<CategoryDTO> dbService, IServiceUW db) : base(dbService,db)
+        public CategoryController(IService<CategoryDTO> dbService) : base(dbService)
         {
         }
         

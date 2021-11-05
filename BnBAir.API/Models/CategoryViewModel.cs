@@ -1,11 +1,10 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using BnBAir.DAL.Enitities;
 
-namespace BnBAir.BLL.DTO
+namespace BnBAir.API.Models
 {
-    public class CategoryDTO
+    public class CategoryViewModel
     {
         public Guid CategoryId { get; set; }
         public string Name { get; set; }
@@ -14,6 +13,6 @@ namespace BnBAir.BLL.DTO
         public virtual ICollection<Room> Rooms { get; set; }
 
         public virtual ICollection<CategoryDate> CategoryDates { get; set; }
-        
+
     }
 }

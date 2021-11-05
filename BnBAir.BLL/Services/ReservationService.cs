@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using BnBAir.BLL.DTO;
 using BnBAir.BLL.Interfaces;
@@ -22,7 +21,7 @@ namespace BnBAir.BLL.Services
 
         public List<ReservationDTO> Get()
         {
-            return _mapper.Map<List<Reservation>, List<ReservationDTO>>(_db.Reservations.GetAll().ToList());
+            return _mapper.Map<IEnumerable<Reservation>, List<ReservationDTO>>(_db.Reservations.GetAll());
         }
 
 
@@ -48,7 +47,7 @@ namespace BnBAir.BLL.Services
         public void Delete(ReservationDTO model)
         {
             var reservation = _mapper.Map<ReservationDTO, Reservation>(model);
-            _db.Reservations.Delete(reservation.ReservationId);
+            _db.Guests.Delete(reservation.Guest.GuestId);
             _db.Save();
         }
 
@@ -59,7 +58,7 @@ namespace BnBAir.BLL.Services
                 => cfg.CreateMap<Reservation, ReservationDTO>()).CreateMapper();
             return mapper;
         }
-        
+
         public void Dispose()
         {
             _db?.Dispose();

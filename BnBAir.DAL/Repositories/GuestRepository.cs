@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using BnBAir.DAL.EF;
+﻿using BnBAir.DAL.EF;
 using BnBAir.DAL.Enitities;
 
 namespace BnBAir.DAL.Repositories
@@ -10,6 +9,5 @@ namespace BnBAir.DAL.Repositories
             : base(db, db.Guests)
         {
         }
-        
     }
 }

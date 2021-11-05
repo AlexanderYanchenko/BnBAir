@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using BnBAir.DAL.EF;
 using BnBAir.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -18,24 +17,24 @@ namespace BnBAir.DAL.Repositories
             _dbSet = dbSet;
         }
 
-        public virtual IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll()
         {
-            return _dbSet.ToList();
+            return this._dbSet;
         }
 
         public T GetById(Guid id)
         {
-            return _dbSet.Find(id);
+            return this._dbSet.Find(id);
         }
 
         public void Create(T item)
         {
-            _dbSet.Add(item);
+            this._dbSet.Add(item);
         }
 
         public void Update(T item)
         {
-            _db.Entry(item).State = EntityState.Modified;
+            this._db.Entry(item).State = EntityState.Modified;
         }
 
         public void Delete(Guid id)
@@ -43,7 +42,7 @@ namespace BnBAir.DAL.Repositories
             var item = GetById(id);
             if (item != null)
             {
-                _dbSet.Remove(item);
+                this._dbSet.Remove(item);
             }
         }
     }

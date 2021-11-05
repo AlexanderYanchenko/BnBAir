@@ -13,7 +13,7 @@ namespace BnBAir.BLL.DTO
         public DateTime BirthDate { get; set; }
         public string Document { get; set; }
 
-        public virtual ICollection<ReservationDTO> Reservations { get; set; }
+        public ICollection<Reservation> Reservations { get; set; }
 
     }
 }

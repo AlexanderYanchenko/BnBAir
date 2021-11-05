@@ -8,18 +8,16 @@ namespace BnBAir.API.Controllers
     public abstract class GenericController<T> : ControllerBase where T : class
     {
         private readonly IService<T> _dbService;
-        private readonly IServiceUW _db;
 
-        public GenericController(IService<T> dbService, IServiceUW db)
+        public GenericController(IService<T> dbService)
         {
-            _dbService = dbService;
-            _db = db;
+            this._dbService = dbService;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_dbService.Get());
+            return Ok(_dbService.Get().ToList());
         }
 
         [HttpGet("{id}")]

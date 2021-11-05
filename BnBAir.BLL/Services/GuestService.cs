@@ -57,7 +57,7 @@ namespace BnBAir.BLL.Services
                 => cfg.CreateMap<Guest, GuestDTO>()).CreateMapper();
             return mapper;
         }
-        
+
         public void Dispose()
         {
             _db?.Dispose();

@@ -8,7 +8,7 @@ namespace BnBAir.API.Controllers
     [Route("api/[controller]")]
     public class ReservationController : GenericController<ReservationDTO>
     {
-        public ReservationController(IService<ReservationDTO> dbService,IServiceUW db) : base(dbService, db)
+        public ReservationController(IService<ReservationDTO> dbService) : base(dbService)
         {
         }
     }
