@@ -12,7 +12,7 @@ namespace BnBAir.DAL.Enitities
         public DateTime BirthDate { get; set; }
         public string Document { get; set; }
 
-        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+        public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
         public Guest()
         {

@@ -12,5 +12,6 @@ namespace BnBAir.BLL.Interfaces
         public void Update(T model);
         public void Delete(T model);
 
+
     }
 }

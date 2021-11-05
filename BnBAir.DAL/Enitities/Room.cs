@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BnBAir.DAL.Enitities
 {
@@ -6,6 +7,7 @@ namespace BnBAir.DAL.Enitities
     {
         public Guid RoomId { get; set; }
         public int Number { get; set; }
+        
         public virtual Category Category { get; set; }
 
         public Room()
