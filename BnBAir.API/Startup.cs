@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using BnBAir.DAL.EF;
 using BnBAir.IoC;
@@ -32,8 +33,9 @@ namespace BnBAir
             services.AddDbContext<ReservationContext>(options => options.UseSqlServer(connection));
             DependencyInjection dependencyInjection = new DependencyInjection(Configuration);
             dependencyInjection.InjectDependencies(services);
-            
-            services.AddControllers();
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -17,7 +17,7 @@ namespace BnBAir.DAL.Repositories
             _dbSet = dbSet;
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return this._dbSet;
         }
