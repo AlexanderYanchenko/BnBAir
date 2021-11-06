@@ -11,7 +11,7 @@ namespace BnBAir.API.Models
         public bool CheckIn { get; set; }
         public bool CheckOut { get; set; }
         
-        public virtual Guest Guest { get; set; }
-        public virtual Room Room { get; set; }
+        public virtual GuestViewModel Guest { get; set; }
+        public virtual RoomViewModel Room { get; set; }
     }
 }
