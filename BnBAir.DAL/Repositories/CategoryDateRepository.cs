@@ -16,7 +16,9 @@ namespace BnBAir.DAL.Repositories
         }
         public override IEnumerable<CategoryDate> GetAll()
         {
-            return _db.CategoryDates.Include(x=>x.Category).ToList();
+            return _db.CategoryDates
+                .Include(x=>x.Category)
+                .ThenInclude(ctg=>ctg.Rooms);
         }
     }
 }

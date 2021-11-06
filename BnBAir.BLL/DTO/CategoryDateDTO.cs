@@ -12,7 +12,5 @@ namespace BnBAir.BLL.DTO
         public decimal Price { get; set; }
 
         public virtual Category Category { get; set; }
-
-        public Guid CategoryId { get; set; }
     }
 }
