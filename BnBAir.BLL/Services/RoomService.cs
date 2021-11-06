@@ -40,6 +40,7 @@ namespace BnBAir.BLL.Services
         {
             var room = _mapper.Map<RoomDTO, Room>(model);
             _db.Rooms.Update(room);
+            _db.Save();
         }
 
         public void Delete(RoomDTO model)

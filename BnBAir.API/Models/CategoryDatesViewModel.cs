@@ -1,6 +1,6 @@
 ﻿namespace BnBAir.API.Models
 {
-    public class CategoryViewModel
+    public class CategoryDatesViewModel
     {
         
     }

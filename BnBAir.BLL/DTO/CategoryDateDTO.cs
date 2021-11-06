@@ -11,6 +11,6 @@ namespace BnBAir.BLL.DTO
         public DateTime EndDate { get; set; }
         public decimal Price { get; set; }
 
-        public virtual Category Category { get; set; }
+        public virtual CategoryDTO Category { get; set; }
     }
 }

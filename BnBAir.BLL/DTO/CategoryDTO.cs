@@ -11,9 +11,9 @@ namespace BnBAir.BLL.DTO
         public string Name { get; set; }
         public int Bed { get; set; }
 
-        public virtual ICollection<Room> Rooms { get; set; }
+        public virtual ICollection<RoomDTO> Rooms { get; set; }
 
-        public virtual ICollection<CategoryDate> CategoryDates { get; set; }
+        public virtual ICollection<CategoryDateDTO> CategoryDates { get; set; }
         
     }
 }

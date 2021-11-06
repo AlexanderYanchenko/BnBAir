@@ -1,10 +1,9 @@
 ﻿using System;
-using BnBAir.BLL.Interfaces;
 using BnBAir.DAL.Enitities;
 
-namespace BnBAir.BLL.DTO
+namespace BnBAir.API.Models
 {
-    public class ReservationDTO
+    public class ReservationViewModel
     {
         public Guid ReservationId { get; set; }
         public DateTime StartDate { get; set; }
@@ -12,8 +11,7 @@ namespace BnBAir.BLL.DTO
         public bool CheckIn { get; set; }
         public bool CheckOut { get; set; }
         
-        public virtual GuestDTO Guest { get; set; }
-        public virtual RoomDTO Room { get; set; }
-
+        public virtual Guest Guest { get; set; }
+        public virtual Room Room { get; set; }
     }
 }

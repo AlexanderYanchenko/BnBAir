@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using BnBAir.API.Models;
 using BnBAir.BLL.DTO;
 using BnBAir.BLL.Interfaces;
 using BnBAir.DAL.Enitities;
@@ -14,14 +15,11 @@ namespace BnBAir.API.Controllers
     [Route("api/[controller]")]
     public class GuestController : ControllerBase
     {
-        private IService<ReservationDTO> _ReservationsDTO;
-        private IService<RoomDTO> _RoomsDTO;
+        private readonly IService<ReservationDTO> _reservations;
         private readonly IBnBAirUW _db;
-        private readonly IMapper _mapper = CreateRoomMapper(); 
-        public GuestController(IService<ReservationDTO> reservationsDto, IService<RoomDTO> roomsDto, IBnBAirUW db)
+        public GuestController(IService<ReservationDTO> reservationsDto, IBnBAirUW db)
         {
-            _ReservationsDTO = reservationsDto;
-            _RoomsDTO = roomsDto;
+            _reservations = reservationsDto;
             _db = db;
         }
 
@@ -34,9 +32,7 @@ namespace BnBAir.API.Controllers
             }
 
             var emptyRooms = new List<Room>();
-            var reservations = _ReservationsDTO.Get();
-            var rooms = _RoomsDTO.Get().ToList();
-            var notEmptyRooms = reservations.Select(x => x.Room).ToList();
+            var reservations = _db.Reservations.GetAll();
 
             foreach (var res in reservations)
             {
@@ -68,14 +64,14 @@ namespace BnBAir.API.Controllers
         [Route("Booking")]
         public IActionResult BookRoom(ReservationDTO reservation)
         {
-            _ReservationsDTO.Create(reservation);
+            _reservations.Create(reservation);
             return Ok();
         }
-        
-        private static IMapper CreateRoomMapper()
+
+        public IMapper CreateMapper()
         {
             var mapper = new MapperConfiguration(cfg
-                => cfg.CreateMap<Room, RoomDTO>()).CreateMapper();
+                => cfg.CreateMap<ReservationDTO, ReservationViewModel>()).CreateMapper();
             return mapper;
         }
     }
