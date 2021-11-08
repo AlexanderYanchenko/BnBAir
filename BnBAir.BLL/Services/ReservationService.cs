@@ -5,6 +5,7 @@ using BnBAir.BLL.DTO;
 using BnBAir.BLL.Interfaces;
 using BnBAir.DAL.Enitities;
 using BnBAir.DAL.Interfaces;
+using Microsoft.Data.SqlClient;
 
 namespace BnBAir.BLL.Services
 {
@@ -55,7 +56,14 @@ namespace BnBAir.BLL.Services
         private static IMapper CreateMapper()
         {
             var mapper = new MapperConfiguration(cfg
-                => cfg.CreateMap<Reservation, ReservationDTO>()).CreateMapper();
+                => cfg.CreateMap<Reservation, ReservationDTO>()
+                    .ForMember(x
+                        =>x.Guest, opt
+                        =>opt.Ignore())
+                    .ForMember(x
+                        =>x.Room,opt
+                        =>opt.Ignore()))
+                    .CreateMapper();
             return mapper;
         }
 

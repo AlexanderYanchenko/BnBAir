@@ -85,7 +85,7 @@ namespace BnBAir.DAL.InitializeData
                 context.Guests.Add(rick);
                 context.SaveChanges();
                 
-                context.Reservations.Add(new Reservation()
+                /*context.Reservations.Add(new Reservation()
                 {
                     Guest = tom,
                     Room = room1,
@@ -102,7 +102,7 @@ namespace BnBAir.DAL.InitializeData
                     EndDate = new DateTime(2021,11,12),
                     CheckIn = false,
                     CheckOut = false
-                });
+                });*/
                 context.SaveChanges();
                 
                 

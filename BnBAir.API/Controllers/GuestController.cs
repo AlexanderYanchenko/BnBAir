@@ -15,12 +15,10 @@ namespace BnBAir.API.Controllers
     [Route("api/[controller]")]
     public class GuestController : ControllerBase
     {
-        private readonly IService<ReservationDTO> _reservations;
-        private readonly IBnBAirUW _db;
-        public GuestController(IService<ReservationDTO> reservationsDto, IBnBAirUW db)
+        private readonly IServiceUW _service;
+        public GuestController(IServiceUW service)
         {
-            _reservations = reservationsDto;
-            _db = db;
+            _service = service;
         }
 
         [HttpGet("searchrooms")]
@@ -31,8 +29,9 @@ namespace BnBAir.API.Controllers
                 return BadRequest("Дата заселения не может быть дальше, чем дата выселения");
             }
 
-            var emptyRooms = new List<Room>();
-            var reservations = _db.Reservations.GetAll();
+            var emptyRooms = new List<RoomViewModel>();
+            var reservations = GetMapper()
+                .Map<List<ReservationDTO>, List<ReservationViewModel>>( _service.ReservationsDTO.Get());
 
             foreach (var res in reservations)
             {
@@ -64,11 +63,11 @@ namespace BnBAir.API.Controllers
         [Route("Booking")]
         public IActionResult BookRoom(ReservationDTO reservation)
         {
-            _reservations.Create(reservation);
+            _service.ReservationsDTO.Create(reservation);
             return Ok();
         }
 
-        public IMapper CreateMapper()
+        public IMapper GetMapper()
         {
             var mapper = new MapperConfiguration(cfg
                 => cfg.CreateMap<ReservationDTO, ReservationViewModel>()).CreateMapper();

@@ -11,7 +11,7 @@ namespace BnBAir.DAL.Enitities
         public bool CheckOut { get; set; }
         
         public virtual Guest Guest { get; set; }
-        
+      
         public virtual Room Room { get; set; }
 
 

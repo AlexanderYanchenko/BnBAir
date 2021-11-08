@@ -13,6 +13,7 @@ namespace BnBAir.BLL.DTO
         public bool CheckOut { get; set; }
         
         public virtual GuestDTO Guest { get; set; }
+        
         public virtual RoomDTO Room { get; set; }
 
     }

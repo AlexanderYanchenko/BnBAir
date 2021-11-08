@@ -33,6 +33,7 @@ namespace BnBAir.IoC
                 .AddScoped<IService<ReservationDTO>, ReservationService>()
                 .AddScoped<IService<RoomDTO>, RoomService>()
                 .AddScoped<IServiceUW, ServiceUW>();
+                
         }
     }
     

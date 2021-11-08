@@ -8,7 +8,7 @@ namespace BnBAir.API.AuthenticationOptions
         public const string ISSUER = "AuthServer";
         public const string AUDIENCE = "AuthClient";
         public const string KEY = "topsecretkey_forn1x";
-        public const int LIFETIME = 30;
+        public const int LIFETIME = 300;
 
         public static SymmetricSecurityKey GetSymmetricSecurityKey()
         {

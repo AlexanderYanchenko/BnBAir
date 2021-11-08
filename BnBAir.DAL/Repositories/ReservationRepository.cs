@@ -18,9 +18,9 @@ namespace BnBAir.DAL.Repositories
         public override IEnumerable<Reservation> GetAll()
         {
             return _db.Reservations
-                           .Include(reservation => reservation.Guest)
-                           .Include(reservation => reservation.Room)
-                           .ThenInclude(room=>room.Category);
+                        .Include(reservation => reservation.Guest)
+                        .Include(reservation => reservation.Room)
+                        .ThenInclude(room=>room.Category);
         }
     }
 }
