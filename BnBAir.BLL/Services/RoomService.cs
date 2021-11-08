@@ -52,7 +52,13 @@ namespace BnBAir.BLL.Services
         private static IMapper CreateMapper()
         {
             var mapper = new MapperConfiguration(cfg
-                => cfg.CreateMap<Room, RoomDTO>()).CreateMapper();
+                =>
+            {
+                cfg.CreateMap<Room, RoomDTO>().ForMember(x
+                    =>x.Category,opt
+                    =>opt.MapFrom(x=>x.Category));
+                cfg.CreateMap<Category, CategoryDTO>();
+            }).CreateMapper();
             return mapper;
         }
 
