@@ -113,8 +113,19 @@ namespace BnBAir.API.Controllers
         public IMapper GetReservationMapper()
         {
             var mapper = new MapperConfiguration(cfg
-                    => cfg.CreateMap<ReservationDTO, ReservationViewModel>())
-                .CreateMapper();
+                =>
+            {
+                cfg.CreateMap<ReservationDTO, ReservationViewModel>()
+                    .ForMember(x
+                        => x.Guest, opt
+                        => opt.MapFrom(x => x.Guest))
+                    .ForMember(x
+                        => x.Room, opt
+                        => opt.MapFrom(x => x.Room));
+                cfg.CreateMap<GuestDTO, GuestViewModel>();
+                cfg.CreateMap<RoomDTO, RoomViewModel>();
+                cfg.CreateMap<CategoryDTO, CategoryViewModel>();
+            }).CreateMapper();
             return mapper;
         }
         

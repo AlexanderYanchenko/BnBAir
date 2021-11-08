@@ -56,14 +56,24 @@ namespace BnBAir.BLL.Services
         private static IMapper CreateMapper()
         {
             var mapper = new MapperConfiguration(cfg
-                => cfg.CreateMap<Reservation, ReservationDTO>()
-                    .ForMember(x
-                        =>x.Guest, opt
-                        =>opt.Ignore())
-                    .ForMember(x
-                        =>x.Room,opt
-                        =>opt.Ignore()))
-                    .CreateMapper();
+                =>
+                {
+                    cfg.CreateMap<Reservation, ReservationDTO>()
+                        .ForMember(x
+                            => x.Guest, opt
+                            => opt.MapFrom(x => x.Guest))
+                        .ForMember(x
+                            => x.Room, opt
+                            => opt.MapFrom(x => x.Room));
+                    cfg.CreateMap<Guest, GuestDTO>();
+                    cfg.CreateMap<Room, RoomDTO>();
+                    cfg.CreateMap<Category, CategoryDTO>();
+                })
+                .CreateMapper();
+
+            var _maper = new MapperConfiguration(cfg
+                    => cfg.CreateMap<Reservation, ReservationDTO>())
+                .CreateMapper();
             return mapper;
         }
 
