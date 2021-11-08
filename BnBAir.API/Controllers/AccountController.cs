@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using BnBAir.API.AuthenticationOptions;
 using BnBAir.API.AuthenticationOptions.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -51,9 +52,19 @@ namespace BnBAir.API.Controllers
             return Ok(response);
         }
         
-        private ClaimsIdentity GetIdentity(string username, string password)
+        
+        private ClaimsIdentity GetIdentity(string? username, string? password)
         {
-            var user = _users.FirstOrDefault(x => x.Login == username && x.Password == password);
+            User user;
+            if (username == null && password == null)
+            {
+                user = new User() { Login = "guest", Role = "guest"};
+            }
+            else
+            {
+                user = _users.FirstOrDefault(x => x.Login == username && x.Password == password);
+            }
+
             if (user == null) return null;
             var claims = new List<Claim>
             {

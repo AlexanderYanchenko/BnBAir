@@ -68,13 +68,19 @@ namespace BnBAir
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+ 
             app.UseRouting();
-
+ 
+            app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+ 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+            });
         }
+       
     }
 }

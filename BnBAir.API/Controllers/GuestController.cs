@@ -7,6 +7,7 @@ using BnBAir.BLL.DTO;
 using BnBAir.BLL.Interfaces;
 using BnBAir.DAL.Enitities;
 using BnBAir.DAL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BnBAir.API.Controllers
@@ -21,6 +22,7 @@ namespace BnBAir.API.Controllers
             _service = service;
         }
 
+        [Authorize(Roles = "guest")]
         [HttpGet("searchrooms")]
         public IActionResult SearchRoomsForDate(DateTime startDate, DateTime endDate)
         {
@@ -59,8 +61,8 @@ namespace BnBAir.API.Controllers
             return Ok(emptyRooms);
         }
 
-        [HttpPost]
-        [Route("Booking")]
+        [Authorize(Roles = "guest")]
+        [HttpPost("booking")]
         public IActionResult BookRoom(ReservationDTO reservation)
         {
             _service.ReservationsDTO.Create(reservation);

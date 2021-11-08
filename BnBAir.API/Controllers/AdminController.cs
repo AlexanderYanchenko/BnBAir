@@ -22,7 +22,7 @@ namespace BnBAir.API.Controllers
             _db = db;
             _service = service;
         }
-    //    [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         [HttpGet("monitoring")]
         public IActionResult MonitorBooking()
         {
@@ -33,6 +33,7 @@ namespace BnBAir.API.Controllers
             return Ok(reservations);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("guestmonitor")]
         public IActionResult GuestMonitor(Guid id)
         {
@@ -53,6 +54,7 @@ namespace BnBAir.API.Controllers
             }
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost("changeparameters")]
         public IActionResult ChangeParametersForGuest(Guid id)
         {
@@ -62,6 +64,7 @@ namespace BnBAir.API.Controllers
             return Ok("Данные успешно обновлены");
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost("addroom")]
         public IActionResult AddRoom(RoomDTO room)
         {
@@ -70,6 +73,7 @@ namespace BnBAir.API.Controllers
             return Ok("Комната добавлена успешно");
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost("editroom")]
         public IActionResult EditRoom(RoomDTO room)
         {
@@ -78,6 +82,7 @@ namespace BnBAir.API.Controllers
             return Ok("Комната изменена успешно");
         }
         
+        [Authorize(Roles = "admin")]
         [HttpPost("deleteroom")]
         public IActionResult DeleteRoom(RoomDTO room)
         {
@@ -86,6 +91,7 @@ namespace BnBAir.API.Controllers
             return Ok("Комната удалена успешно");
         }
         
+        [Authorize(Roles = "admin")]
         [HttpPost("addcategory")]
         public IActionResult AddCategory(CategoryDTO category)
         {
@@ -94,6 +100,7 @@ namespace BnBAir.API.Controllers
             return Ok("Категория добавлена успешно");
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost("editcategory")]
         public IActionResult EditCategory(CategoryDTO category)
         {
@@ -102,6 +109,7 @@ namespace BnBAir.API.Controllers
             return Ok("Категория изменена успешно");
         }
         
+        [Authorize(Roles = "admin")]
         [HttpPost("deletecategory")]
         public IActionResult DeleteCategory(CategoryDTO category)
         {
