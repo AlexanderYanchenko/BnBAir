@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BnBAir.DAL.EF;
 using BnBAir.DAL.Enitities;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +16,9 @@ namespace BnBAir.DAL.Repositories
             _db = db;
         }
         
-        public override IEnumerable<Room> GetAll()
+        public override async Task<IEnumerable<Room>> GetAll()
         {
-            return _db.Rooms.Include(x=>x.Category).ToList();
+            return await _db.Rooms.Include(x=>x.Category).ToListAsync();
         }
     }
 }

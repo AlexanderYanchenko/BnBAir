@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using BnBAir.API.AuthenticationOptions;
 using BnBAir.API.AuthenticationOptions.Models;
 using Microsoft.AspNetCore.Identity;
@@ -26,7 +27,7 @@ namespace BnBAir.API.Controllers
         };
         
         [HttpPost("token")]
-        public IActionResult Token(string username, string password)
+        public async Task<IActionResult> Token(string username, string password)
         {
             var identity = GetIdentity(username, password);
             if (identity == null)

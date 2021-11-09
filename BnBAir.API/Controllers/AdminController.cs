@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using BnBAir.API.Models;
 using BnBAir.BLL.DTO;
@@ -26,10 +27,10 @@ namespace BnBAir.API.Controllers
         }
 
         [HttpGet("report")]
-        public IActionResult GetReport()
+        public async Task<IActionResult>  GetReport()
         {
             var reservations = GetReservationMapper()
-                .Map<IEnumerable<ReservationDTO>, List<ReservationViewModel>>(_service.ReservationsDTO.Get());
+                .Map<IEnumerable<ReservationDTO>, List<ReservationViewModel>>( await _service.ReservationsDTO.Get());
             var report = new ReportViewModel()
             {
                 CountOfReservations = reservations.Count,
@@ -39,17 +40,17 @@ namespace BnBAir.API.Controllers
             return Ok(report);
         }
         [HttpGet("monitoring")]
-        public IActionResult MonitorBooking()
+        public async Task<IActionResult> MonitorBooking()
         {
 
-            var reservations = GetReservationMapper()
-                    .Map<IEnumerable<ReservationDTO>, List<ReservationViewModel>>(_service.ReservationsDTO.Get()) 
-                ?? throw new ArgumentNullException();
+            var reservations =  GetReservationMapper()
+                                   .Map<IEnumerable<ReservationDTO>, List<ReservationViewModel>>(await _service.ReservationsDTO.Get()) 
+                               ?? throw new ArgumentNullException();
             return Ok(reservations);
         }
         
         [HttpGet("guestmonitor")]
-        public IActionResult GuestMonitor(Guid id)
+        public async Task<IActionResult> GuestMonitor(Guid id)
         {
             if (string.IsNullOrEmpty(id.ToString()))
             {
@@ -59,7 +60,7 @@ namespace BnBAir.API.Controllers
             try
             {
                 var guestReservation = GetReservationMapper()
-                    .Map<ReservationDTO, ReservationViewModel>(_service.ReservationsDTO.GetById(id));
+                    .Map<ReservationDTO, ReservationViewModel>(await _service.ReservationsDTO.GetById(id));
                return Ok(guestReservation);
             }
             catch (Exception e)
@@ -69,10 +70,10 @@ namespace BnBAir.API.Controllers
         }
 
         [HttpPost("changeparameters")]
-        public IActionResult ChangeParametersForGuest(Guid id, bool? checkIn, bool? checkOut)
+        public async Task<IActionResult> ChangeParametersForGuest(Guid id, bool? checkIn, bool? checkOut)
         {
             
-            var reservation = GetReservationMapper().Map<ReservationDTO, ReservationViewModel>(_service.ReservationsDTO.GetById(id));
+            var reservation = GetReservationMapper().Map<ReservationDTO, ReservationViewModel>(await _service.ReservationsDTO.GetById(id));
             if (checkIn != null) reservation.CheckIn = (bool) checkIn;
             if (checkOut != null) reservation.CheckOut = (bool) checkOut;
 
@@ -85,7 +86,7 @@ namespace BnBAir.API.Controllers
         #region Add/Edit/Delete Room
         
         [HttpPost("addroom")]
-        public IActionResult AddRoom(RoomViewModel room)
+        public async Task<IActionResult> AddRoom(RoomViewModel room)
         {
             var roomDto = GetRoomMapper().Map<RoomViewModel, RoomDTO>(room);
             _service.RoomsDTO.Create(roomDto);
@@ -93,18 +94,18 @@ namespace BnBAir.API.Controllers
         }
         
         [HttpPost("editroom")]
-        public IActionResult EditRoom(RoomViewModel room)
+        public async Task<IActionResult> EditRoom(RoomViewModel room)
         {
-            var roomViewModel = GetRoomMapper().Map<RoomDTO, RoomViewModel>(_service.RoomsDTO.GetById(room.RoomId));
+            var roomViewModel = GetRoomMapper().Map<RoomDTO, RoomViewModel>(await _service.RoomsDTO.GetById(room.RoomId));
             var roomDto = GetRoomMapper().Map<RoomViewModel, RoomDTO>(roomViewModel);
             _service.RoomsDTO.Update(roomDto);
             return Ok("Комната изменена успешно");
         }
         
         [HttpPost("deleteroom")]
-        public IActionResult DeleteRoom(Guid id)
+        public async Task<IActionResult> DeleteRoom(Guid id)
         {
-            var room = GetRoomMapper().Map<RoomDTO, RoomViewModel>(_service.RoomsDTO.GetById(id));
+            var room = GetRoomMapper().Map<RoomDTO, RoomViewModel>( await _service.RoomsDTO.GetById(id));
             var roomDto = GetRoomMapper().Map<RoomViewModel, RoomDTO>(room);
             _service.RoomsDTO.Delete(roomDto);
             return Ok("Комната удалена успешно");
@@ -115,27 +116,27 @@ namespace BnBAir.API.Controllers
         #region Add/Edit/Delete Category
 
         [HttpPost("addcategory")]
-        public IActionResult AddCategory(CategoryViewModel category)
+        public async Task<IActionResult> AddCategory(CategoryViewModel category)
         {
             var categoryDto = GetCategoryMapper().Map<CategoryViewModel, CategoryDTO>(category);
-            _service.CategoriesDTO.Create(categoryDto);
+            _service.CategoriesDTO.Create( categoryDto);
             return Ok("Категория добавлена успешно");
         }
         
         [HttpPost("editcategory")]
-        public IActionResult EditCategory(CategoryViewModel category)
+        public async Task<IActionResult> EditCategory(CategoryViewModel category)
         {
-            var categoryViewModel = GetCategoryMapper().Map<CategoryDTO, CategoryViewModel>(_service.CategoriesDTO.GetById(category.CategoryId));
+            var categoryViewModel = GetCategoryMapper().Map<CategoryDTO, CategoryViewModel>(await _service.CategoriesDTO.GetById(category.CategoryId));
             var categoryDto = GetCategoryMapper().Map<CategoryViewModel, CategoryDTO>(categoryViewModel);
             _service.CategoriesDTO.Update(categoryDto);
             return Ok("Категория изменена успешно");
         }
         
         [HttpPost("deletecategory")]
-        public IActionResult DeleteCategory(Guid id)
+        public async Task<IActionResult> DeleteCategory(Guid id)
         {
             var category = _service.CategoriesDTO.GetById(id);
-            _service.CategoriesDTO.Delete(category);
+            _service.CategoriesDTO.Delete(await category);
             return Ok("Категория удалена успешно");
         }
 

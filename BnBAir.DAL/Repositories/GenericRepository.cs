@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BnBAir.DAL.EF;
+using BnBAir.DAL.Enitities;
 using BnBAir.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,23 +20,23 @@ namespace BnBAir.DAL.Repositories
             _dbSet = dbSet;
         }
 
-        public virtual IEnumerable<T> GetAll()
+        public virtual async Task<IEnumerable<T>> GetAll()
         {
-            return _dbSet;
+            return await _dbSet.ToListAsync();
         }
 
-        public T GetById(Guid id)
+        public async Task<T> GetById(Guid id)
         {
-            return _dbSet.Find(id);
+            return await _dbSet.FindAsync(id);
         }
 
-        public void Create(T item)
+        public async void Create(T item)
         {
-            _dbSet.Add(item);
-            _db.SaveChanges();
+            await _dbSet.AddAsync(item);
+            await _db.SaveChangesAsync();
         }
 
-        public void Update(T item)
+        public async void Update(T item)
         {
             if (item != null)
             {
@@ -42,17 +44,17 @@ namespace BnBAir.DAL.Repositories
             }
 
             if (item != null) _db.Entry(item).State = EntityState.Added;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
 
-        public void Delete(Guid id)
+        public async void Delete(Guid id)
         {
             var item = GetById(id);
             if (item != null)
             {
-                _dbSet.Remove(item);
+                _dbSet.Remove(await item);
             }
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
     }
 }

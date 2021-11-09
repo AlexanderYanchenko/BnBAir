@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using BnBAir.API.Models;
 using BnBAir.BLL.DTO;
@@ -24,14 +25,14 @@ namespace BnBAir.API.Controllers
         }
 
         [HttpGet("listofrooms")]
-        public IActionResult ListOfRooms()
+        public async Task<IActionResult> ListOfRooms()
         {
             var rooms = GetRoomMapper()
-                .Map<IEnumerable<RoomDTO>, List<RoomViewModel>>(_service.RoomsDTO.Get());
+                .Map<IEnumerable<RoomDTO>, List<RoomViewModel>>( await _service.RoomsDTO.Get());
             return Ok(rooms);
         }
         [HttpGet("searchrooms")]
-        public IActionResult SearchRoomsForDate(DateTime startDate, DateTime endDate)
+        public async Task<IActionResult> SearchRoomsForDate(DateTime startDate, DateTime endDate)
         {
             if (startDate > endDate)
             {
@@ -40,7 +41,7 @@ namespace BnBAir.API.Controllers
 
             var emptyRooms = new List<RoomViewModel>();
             var reservations = GetReservationMapper()
-                .Map<List<ReservationDTO>, List<ReservationViewModel>>( _service.ReservationsDTO.Get());
+                .Map<List<ReservationDTO>, List<ReservationViewModel>>(  await _service.ReservationsDTO.Get());
 
             foreach (var res in reservations)
             {
@@ -69,7 +70,7 @@ namespace BnBAir.API.Controllers
         }
         
         [HttpPost("booking")]
-        public IActionResult BookRoom(ReservationViewModel reservation)
+        public async Task<IActionResult> BookRoom(ReservationViewModel reservation)
         {
             var reservationDto = GetReservationMapper().Map<ReservationViewModel, ReservationDTO>(reservation);
             _service.ReservationsDTO.Create(reservationDto);

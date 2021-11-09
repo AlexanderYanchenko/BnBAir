@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using BnBAir.BLL.DTO;
 using BnBAir.BLL.Interfaces;
@@ -20,14 +21,14 @@ namespace BnBAir.BLL.Services
         }
 
 
-        public List<GuestDTO> Get()
+        public async Task<List<GuestDTO>>  Get()
         {
-            return _mapper.Map<IEnumerable<Guest>, List<GuestDTO>>(_db.Guests.GetAll());
+            return _mapper.Map<IEnumerable<Guest>, List<GuestDTO>>(await _db.Guests.GetAll());
         }
 
-        public GuestDTO GetById(Guid id)
+        public async Task<GuestDTO> GetById(Guid id)
         {
-            return _mapper.Map<Guest, GuestDTO>(_db.Guests.GetById(id));
+            return _mapper.Map<Guest, GuestDTO>( await _db.Guests.GetById(id));
         }
         
         public void Update(GuestDTO model)

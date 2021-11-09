@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using BnBAir.DAL.EF;
 using BnBAir.DAL.Enitities;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,11 @@ namespace BnBAir.DAL.Repositories
         {
             _db = db;
         }
-        public override IEnumerable<Guest> GetAll()
+        public override async Task<IEnumerable<Guest>> GetAll()
         {
-            return _db.Guests.Include(guest => guest.Reservations);
+            return await _db.Guests
+                         .Include(guest => guest.Reservations)
+                         .ToListAsync();
         }
     }
 }
