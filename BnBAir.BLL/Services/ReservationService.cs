@@ -42,13 +42,13 @@ namespace BnBAir.BLL.Services
         {
             var reservation = _mapper.Map<ReservationDTO, Reservation>(model);
             _db.Reservations.Update(reservation);
-            _db.Save();
+          //  _db.Save();
         }
 
         public void Delete(ReservationDTO model)
         {
             var reservation = _mapper.Map<ReservationDTO, Reservation>(model);
-            _db.Guests.Delete(reservation.Guest.GuestId);
+            _db.Reservations.Delete(reservation.ReservationId);
             _db.Save();
         }
 
@@ -64,10 +64,11 @@ namespace BnBAir.BLL.Services
                             => opt.MapFrom(x => x.Guest))
                         .ForMember(x
                             => x.Room, opt
-                            => opt.MapFrom(x => x.Room));
-                    cfg.CreateMap<Guest, GuestDTO>();
-                    cfg.CreateMap<Room, RoomDTO>();
-                    cfg.CreateMap<Category, CategoryDTO>();
+                            => opt.MapFrom(x => x.Room))
+                        .ReverseMap();
+                    cfg.CreateMap<Guest, GuestDTO>().ReverseMap();
+                    cfg.CreateMap<Room, RoomDTO>().ReverseMap();
+                    cfg.CreateMap<Category, CategoryDTO>().ReverseMap();
                 })
                 .CreateMapper();
 

@@ -13,6 +13,7 @@ namespace BnBAir.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    //[Authorize(Roles = "admin")]
     public class AdminController : ControllerBase
     {
         private readonly IServiceUW _service;
@@ -22,7 +23,7 @@ namespace BnBAir.API.Controllers
             _db = db;
             _service = service;
         }
-        [Authorize(Roles = "admin")]
+
         [HttpGet("monitoring")]
         public IActionResult MonitorBooking()
         {
@@ -32,8 +33,7 @@ namespace BnBAir.API.Controllers
                 ?? throw new ArgumentNullException();
             return Ok(reservations);
         }
-
-        [Authorize(Roles = "admin")]
+        
         [HttpGet("guestmonitor")]
         public IActionResult GuestMonitor(Guid id)
         {
@@ -54,71 +54,81 @@ namespace BnBAir.API.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
         [HttpPost("changeparameters")]
-        public IActionResult ChangeParametersForGuest(Guid id)
+        public IActionResult ChangeParametersForGuest(Guid id, bool? checkIn, bool? checkOut)
         {
-            var guest = _service.ReservationsDTO.GetById(id);
-            _service.ReservationsDTO.Update(guest);
-            _db.Save();
+            
+            var reservation = GetReservationMapper().Map<ReservationDTO, ReservationViewModel>(_service.ReservationsDTO.GetById(id));
+            if (checkIn != null) reservation.CheckIn = (bool) checkIn;
+            if (checkOut != null) reservation.CheckOut = (bool) checkOut;
+
+
+            var reversedReservation = GetReservationMapper().Map<ReservationViewModel, ReservationDTO>(reservation);
+            _service.ReservationsDTO.Update(reversedReservation);
             return Ok("Данные успешно обновлены");
         }
 
-        [Authorize(Roles = "admin")]
+        #region Add/Edit/Delete Room
+        
         [HttpPost("addroom")]
-        public IActionResult AddRoom(RoomDTO room)
+        public IActionResult AddRoom(RoomViewModel room)
         {
-            _service.RoomsDTO.Create(room);
-            _db.Save();
+            var roomDto = GetRoomMapper().Map<RoomViewModel, RoomDTO>(room);
+            _service.RoomsDTO.Create(roomDto);
             return Ok("Комната добавлена успешно");
         }
-
-        [Authorize(Roles = "admin")]
+        
         [HttpPost("editroom")]
-        public IActionResult EditRoom(RoomDTO room)
+        public IActionResult EditRoom(RoomViewModel room)
         {
-            _service.RoomsDTO.Update(room);
-            _db.Save();
+            var roomViewModel = GetRoomMapper().Map<RoomDTO, RoomViewModel>(_service.RoomsDTO.GetById(room.RoomId));
+            var roomDto = GetRoomMapper().Map<RoomViewModel, RoomDTO>(roomViewModel);
+            _service.RoomsDTO.Update(roomDto);
             return Ok("Комната изменена успешно");
         }
         
-        [Authorize(Roles = "admin")]
         [HttpPost("deleteroom")]
-        public IActionResult DeleteRoom(RoomDTO room)
+        public IActionResult DeleteRoom(Guid id)
         {
-            _service.RoomsDTO.Delete(room);
-            _db.Save();
+            var room = GetRoomMapper().Map<RoomDTO, RoomViewModel>(_service.RoomsDTO.GetById(id));
+            var roomDto = GetRoomMapper().Map<RoomViewModel, RoomDTO>(room);
+            _service.RoomsDTO.Delete(roomDto);
             return Ok("Комната удалена успешно");
         }
         
-        [Authorize(Roles = "admin")]
+        #endregion
+
+        #region Add/Edit/Delete Category
+
         [HttpPost("addcategory")]
-        public IActionResult AddCategory(CategoryDTO category)
+        public IActionResult AddCategory(CategoryViewModel category)
         {
-            _service.CategoriesDTO.Create(category);
-            _db.Save();
+            var categoryDto = GetCategoryMapper().Map<CategoryViewModel, CategoryDTO>(category);
+            _service.CategoriesDTO.Create(categoryDto);
             return Ok("Категория добавлена успешно");
         }
-
-        [Authorize(Roles = "admin")]
+        
         [HttpPost("editcategory")]
-        public IActionResult EditCategory(CategoryDTO category)
+        public IActionResult EditCategory(CategoryViewModel category)
         {
-            _service.CategoriesDTO.Update(category);
-            _db.Save();
+            var categoryViewModel = GetCategoryMapper().Map<CategoryDTO, CategoryViewModel>(_service.CategoriesDTO.GetById(category.CategoryId));
+            var categoryDto = GetCategoryMapper().Map<CategoryViewModel, CategoryDTO>(categoryViewModel);
+            _service.CategoriesDTO.Update(categoryDto);
             return Ok("Категория изменена успешно");
         }
         
-        [Authorize(Roles = "admin")]
         [HttpPost("deletecategory")]
-        public IActionResult DeleteCategory(CategoryDTO category)
+        public IActionResult DeleteCategory(Guid id)
         {
+            var category = _service.CategoriesDTO.GetById(id);
             _service.CategoriesDTO.Delete(category);
-            _db.Save();
             return Ok("Категория удалена успешно");
         }
 
-        public IMapper GetReservationMapper()
+        #endregion
+        
+        #region Mappers
+        private static IMapper GetReservationMapper()
         {
             var mapper = new MapperConfiguration(cfg
                 =>
@@ -129,13 +139,39 @@ namespace BnBAir.API.Controllers
                         => opt.MapFrom(x => x.Guest))
                     .ForMember(x
                         => x.Room, opt
-                        => opt.MapFrom(x => x.Room));
-                cfg.CreateMap<GuestDTO, GuestViewModel>();
-                cfg.CreateMap<RoomDTO, RoomViewModel>();
-                cfg.CreateMap<CategoryDTO, CategoryViewModel>();
+                        => opt.MapFrom(x => x.Room))
+                    .ReverseMap();
+                cfg.CreateMap<GuestDTO, GuestViewModel>().ReverseMap();
+                cfg.CreateMap<RoomDTO, RoomViewModel>().ReverseMap();
+                cfg.CreateMap<CategoryDTO, CategoryViewModel>().ReverseMap();
             }).CreateMapper();
             return mapper;
         }
+
+        private static IMapper GetRoomMapper()
+        {
+            var mapper = new MapperConfiguration(cfg
+                =>
+            {
+                cfg.CreateMap<RoomDTO, RoomViewModel>().ForMember(x
+                        =>x.Category,opt
+                        =>opt.MapFrom(x=>x.Category))
+                    .ReverseMap();
+                cfg.CreateMap<CategoryDTO, CategoryViewModel>().ReverseMap();
+            }).CreateMapper();
+            return mapper;
+        }
+
+        private static IMapper GetCategoryMapper()
+        {
+            var mapper = new MapperConfiguration(cfg
+                    => cfg.CreateMap<CategoryDTO, CategoryViewModel>()
+                        .ReverseMap())
+                .CreateMapper();
+            return mapper;
+        }
         
+        #endregion
+       
     }
 }

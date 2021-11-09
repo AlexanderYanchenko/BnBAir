@@ -56,8 +56,9 @@ namespace BnBAir.BLL.Services
             {
                 cfg.CreateMap<Room, RoomDTO>().ForMember(x
                     =>x.Category,opt
-                    =>opt.MapFrom(x=>x.Category));
-                cfg.CreateMap<Category, CategoryDTO>();
+                    =>opt.MapFrom(x=>x.Category))
+                    .ReverseMap();
+                cfg.CreateMap<Category, CategoryDTO>().ReverseMap();
             }).CreateMapper();
             return mapper;
         }

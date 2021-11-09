@@ -14,6 +14,7 @@ namespace BnBAir.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "guest")]
     public class GuestController : ControllerBase
     {
         private readonly IServiceUW _service;
@@ -22,7 +23,13 @@ namespace BnBAir.API.Controllers
             _service = service;
         }
 
-        [Authorize(Roles = "guest")]
+        [HttpGet("listofrooms")]
+        public IActionResult ListOfRooms()
+        {
+            var rooms = GetRoomMapper()
+                .Map<IEnumerable<RoomDTO>, List<RoomViewModel>>(_service.RoomsDTO.Get());
+            return Ok(rooms);
+        }
         [HttpGet("searchrooms")]
         public IActionResult SearchRoomsForDate(DateTime startDate, DateTime endDate)
         {
@@ -32,7 +39,7 @@ namespace BnBAir.API.Controllers
             }
 
             var emptyRooms = new List<RoomViewModel>();
-            var reservations = GetMapper()
+            var reservations = GetReservationMapper()
                 .Map<List<ReservationDTO>, List<ReservationViewModel>>( _service.ReservationsDTO.Get());
 
             foreach (var res in reservations)
@@ -60,16 +67,18 @@ namespace BnBAir.API.Controllers
 
             return Ok(emptyRooms);
         }
-
-        [Authorize(Roles = "guest")]
+        
         [HttpPost("booking")]
-        public IActionResult BookRoom(ReservationDTO reservation)
+        public IActionResult BookRoom(ReservationViewModel reservation)
         {
-            _service.ReservationsDTO.Create(reservation);
+            var reservationDto = GetReservationMapper().Map<ReservationViewModel, ReservationDTO>(reservation);
+            _service.ReservationsDTO.Create(reservationDto);
             return Ok();
         }
+        
+        #region Mappers
 
-        public IMapper GetMapper()
+        private static IMapper GetReservationMapper()
         {
             var mapper = new MapperConfiguration(cfg
                 =>
@@ -80,12 +89,30 @@ namespace BnBAir.API.Controllers
                         => opt.MapFrom(x => x.Guest))
                     .ForMember(x
                         => x.Room, opt
-                        => opt.MapFrom(x => x.Room));
-                cfg.CreateMap<GuestDTO, GuestViewModel>();
-                cfg.CreateMap<RoomDTO, RoomViewModel>();
-                cfg.CreateMap<CategoryDTO, CategoryViewModel>();
+                        => opt.MapFrom(x => x.Room))
+                    .ReverseMap();
+                cfg.CreateMap<GuestDTO, GuestViewModel>().ReverseMap();
+                cfg.CreateMap<RoomDTO, RoomViewModel>().ReverseMap();
+                cfg.CreateMap<CategoryDTO, CategoryViewModel>().ReverseMap();
             }).CreateMapper();
             return mapper;
         }
+
+        private static IMapper GetRoomMapper()
+        {
+            var mapper = new MapperConfiguration(cfg
+                =>
+            {
+                cfg.CreateMap<RoomDTO, RoomViewModel>().ForMember(x
+                        =>x.Category,opt
+                        =>opt.MapFrom(x=>x.Category))
+                    .ReverseMap();
+                cfg.CreateMap<CategoryDTO, CategoryViewModel>().ReverseMap();
+            }).CreateMapper();
+            return mapper;
+        }
+
+        #endregion
+
     }
 }
