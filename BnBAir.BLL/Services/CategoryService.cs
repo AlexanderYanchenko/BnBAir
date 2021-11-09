@@ -53,8 +53,16 @@ namespace BnBAir.BLL.Services
         private static IMapper CreateMapper()
         {
             var mapper = new MapperConfiguration(cfg
-                => cfg.CreateMap<Category, CategoryDTO>()
-                    .ReverseMap())
+                =>
+                {
+                    cfg.CreateMap<Category, CategoryDTO>()
+                        .ForMember(x
+                            => x.CategoryDates, opt
+                            => opt.MapFrom(x => x.CategoryDates))
+                        .ReverseMap();
+                    cfg.CreateMap<CategoryDate, CategoryDateDTO>()
+                        .ReverseMap();
+                })
                 .CreateMapper();
             return mapper;
         }

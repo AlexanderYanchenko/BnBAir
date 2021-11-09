@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using BnBAir.API.Models;
 using BnBAir.BLL.DTO;
@@ -24,6 +25,19 @@ namespace BnBAir.API.Controllers
             _service = service;
         }
 
+        [HttpGet("report")]
+        public IActionResult GetReport()
+        {
+            var reservations = GetReservationMapper()
+                .Map<IEnumerable<ReservationDTO>, List<ReservationViewModel>>(_service.ReservationsDTO.Get());
+            var report = new ReportViewModel()
+            {
+                CountOfReservations = reservations.Count,
+                TotalSum = reservations.Sum(reservation 
+                    => reservation.Room.Category.CategoryDates.First().Price)
+            };
+            return Ok(report);
+        }
         [HttpGet("monitoring")]
         public IActionResult MonitorBooking()
         {
@@ -165,8 +179,16 @@ namespace BnBAir.API.Controllers
         private static IMapper GetCategoryMapper()
         {
             var mapper = new MapperConfiguration(cfg
-                    => cfg.CreateMap<CategoryDTO, CategoryViewModel>()
-                        .ReverseMap())
+                    =>
+                {
+                    cfg.CreateMap<CategoryDTO, CategoryViewModel>()
+                        .ForMember(x
+                            => x.CategoryDates, opt
+                            => opt.MapFrom(x => x.CategoryDates))
+                        .ReverseMap();
+                    cfg.CreateMap<CategoryDateDTO, CategoryDatesViewModel>()
+                        .ReverseMap();
+                })
                 .CreateMapper();
             return mapper;
         }
