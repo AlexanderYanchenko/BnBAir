@@ -22,6 +22,7 @@ namespace BnBAir.DAL.Repositories
                         .Include(reservation => reservation.Guest)
                         .Include(reservation => reservation.Room)
                         .ThenInclude(room=>room.Category)
+                        .ThenInclude(category=>category.CategoryDates)
                         .ToListAsync();
         }
     }

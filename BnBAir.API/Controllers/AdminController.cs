@@ -146,20 +146,29 @@ namespace BnBAir.API.Controllers
         private static IMapper GetReservationMapper()
         {
             var mapper = new MapperConfiguration(cfg
-                =>
-            {
-                cfg.CreateMap<ReservationDTO, ReservationViewModel>()
-                    .ForMember(x
-                        => x.Guest, opt
-                        => opt.MapFrom(x => x.Guest))
-                    .ForMember(x
-                        => x.Room, opt
-                        => opt.MapFrom(x => x.Room))
-                    .ReverseMap();
-                cfg.CreateMap<GuestDTO, GuestViewModel>().ReverseMap();
-                cfg.CreateMap<RoomDTO, RoomViewModel>().ReverseMap();
-                cfg.CreateMap<CategoryDTO, CategoryViewModel>().ReverseMap();
-            }).CreateMapper();
+                    =>
+                {
+                    cfg.CreateMap<ReservationDTO, ReservationViewModel>()
+                        .ForMember(x
+                            => x.Guest, opt
+                            => opt.MapFrom(x => x.Guest))
+                        .ForMember(x
+                            => x.Room, opt
+                            => opt.MapFrom(x => x.Room))
+                        .ReverseMap();
+                    cfg.CreateMap<GuestDTO, GuestViewModel>().ReverseMap();
+                    cfg.CreateMap<RoomDTO, RoomViewModel>()
+                        .ForMember(x
+                            =>x.Category,opt
+                            =>opt.MapFrom(x=>x.Category))
+                        .ReverseMap();
+                    cfg.CreateMap<CategoryDTO, CategoryViewModel>()
+                        .ForMember(x=>x.CategoryDates, opt
+                            =>opt.MapFrom(x=>x.CategoryDates))
+                        .ReverseMap();
+                    cfg.CreateMap<CategoryDateDTO, CategoryDatesViewModel>().ReverseMap();
+                })
+                .CreateMapper();
             return mapper;
         }
 

@@ -68,13 +68,17 @@ namespace BnBAir.BLL.Services
                             => opt.MapFrom(x => x.Room))
                         .ReverseMap();
                     cfg.CreateMap<Guest, GuestDTO>().ReverseMap();
-                    cfg.CreateMap<Room, RoomDTO>().ReverseMap();
-                    cfg.CreateMap<Category, CategoryDTO>().ReverseMap();
+                    cfg.CreateMap<Room, RoomDTO>()
+                        .ForMember(x
+                            =>x.Category,opt
+                            =>opt.MapFrom(x=>x.Category))
+                        .ReverseMap();
+                    cfg.CreateMap<Category, CategoryDTO>()
+                        .ForMember(x=>x.CategoryDates, opt
+                        =>opt.MapFrom(x=>x.CategoryDates))
+                        .ReverseMap();
+                    cfg.CreateMap<CategoryDate, CategoryDateDTO>().ReverseMap();
                 })
-                .CreateMapper();
-
-            var _maper = new MapperConfiguration(cfg
-                    => cfg.CreateMap<Reservation, ReservationDTO>())
                 .CreateMapper();
             return mapper;
         }
