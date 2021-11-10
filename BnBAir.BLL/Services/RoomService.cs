@@ -59,7 +59,11 @@ namespace BnBAir.BLL.Services
                     =>x.Category,opt
                     =>opt.MapFrom(x=>x.Category))
                     .ReverseMap();
-                cfg.CreateMap<Category, CategoryDTO>().ReverseMap();
+                cfg.CreateMap<Category, CategoryDTO>()
+                    .ForMember(x=>x.CategoryDates, opt
+                    =>opt.MapFrom(x=>x.CategoryDates))
+                    .ReverseMap();
+                cfg.CreateMap<CategoryDate, CategoryDateDTO>().ReverseMap();
             }).CreateMapper();
             return mapper;
         }

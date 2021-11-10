@@ -42,6 +42,7 @@ namespace BnBAir.API.Controllers
             var emptyRooms = new List<RoomViewModel>();
             var reservations = GetReservationMapper()
                 .Map<List<ReservationDTO>, List<ReservationViewModel>>(  await _service.ReservationsDTO.Get());
+            var rooms = GetRoomMapper().Map<List<RoomDTO>, List<RoomViewModel>>(await _service.RoomsDTO.Get());
 
             foreach (var res in reservations)
             {
@@ -60,7 +61,14 @@ namespace BnBAir.API.Controllers
                     emptyRooms.Add(res.Room);
                 }
             }
-            
+
+            foreach (var room in rooms)
+            {
+                if (!reservations.Exists(x => x.Room.RoomId == room.RoomId))
+                {
+                    emptyRooms.Add(room);
+                }
+            }
             if (!emptyRooms.Any())
             {
                 return BadRequest($"Свободных комнат на дату {startDate} - {endDate} нет");
@@ -82,20 +90,29 @@ namespace BnBAir.API.Controllers
         private static IMapper GetReservationMapper()
         {
             var mapper = new MapperConfiguration(cfg
-                =>
-            {
-                cfg.CreateMap<ReservationDTO, ReservationViewModel>()
-                    .ForMember(x
-                        => x.Guest, opt
-                        => opt.MapFrom(x => x.Guest))
-                    .ForMember(x
-                        => x.Room, opt
-                        => opt.MapFrom(x => x.Room))
-                    .ReverseMap();
-                cfg.CreateMap<GuestDTO, GuestViewModel>().ReverseMap();
-                cfg.CreateMap<RoomDTO, RoomViewModel>().ReverseMap();
-                cfg.CreateMap<CategoryDTO, CategoryViewModel>().ReverseMap();
-            }).CreateMapper();
+                    =>
+                {
+                    cfg.CreateMap<ReservationDTO, ReservationViewModel>()
+                        .ForMember(x
+                            => x.Guest, opt
+                            => opt.MapFrom(x => x.Guest))
+                        .ForMember(x
+                            => x.Room, opt
+                            => opt.MapFrom(x => x.Room))
+                        .ReverseMap();
+                    cfg.CreateMap<GuestDTO, GuestViewModel>().ReverseMap();
+                    cfg.CreateMap<RoomDTO, RoomViewModel>()
+                        .ForMember(x
+                            =>x.Category,opt
+                            =>opt.MapFrom(x=>x.Category))
+                        .ReverseMap();
+                    cfg.CreateMap<CategoryDTO, CategoryViewModel>()
+                        .ForMember(x=>x.CategoryDates, opt
+                            =>opt.MapFrom(x=>x.CategoryDates))
+                        .ReverseMap();
+                    cfg.CreateMap<CategoryDateDTO, CategoryDatesViewModel>().ReverseMap();
+                })
+                .CreateMapper();
             return mapper;
         }
 
@@ -108,7 +125,11 @@ namespace BnBAir.API.Controllers
                         =>x.Category,opt
                         =>opt.MapFrom(x=>x.Category))
                     .ReverseMap();
-                cfg.CreateMap<CategoryDTO, CategoryViewModel>().ReverseMap();
+                cfg.CreateMap<CategoryDTO, CategoryViewModel>().ForMember(x
+                    => x.CategoryDates, opt
+                        =>opt.MapFrom(x=>x.CategoryDates))
+                    .ReverseMap();
+                cfg.CreateMap<CategoryDateDTO, CategoryDatesViewModel>().ReverseMap();
             }).CreateMapper();
             return mapper;
         }
