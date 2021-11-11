@@ -28,8 +28,8 @@ namespace BnBAir.DAL.Repositories
         }
         public override async void Create(Reservation reservation, Guid? itemId)
         {
-            var room = _db.Rooms.FirstOrDefault(x => x.RoomId == itemId);
-            reservation.Room = room;
+            var room = _db.Rooms.FirstOrDefaultAsync(x => x.RoomId == itemId);
+            reservation.Room = await room;
             await _db.Reservations.AddAsync(reservation);
             await _db.SaveChangesAsync();
         }
