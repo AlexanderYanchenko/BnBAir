@@ -29,10 +29,10 @@ namespace BnBAir.BLL.Services
             return _mapper.Map<Category, CategoryDTO>(await _db.Categories.GetById(id));
         }
 
-        public void Create(CategoryDTO model)
+        public void Create(CategoryDTO model, Guid? itemId)
         {
             var category = _mapper.Map<CategoryDTO, Category>(model);
-            _db.Categories.Create(category);
+            _db.Categories.Create(category, null);
             _db.Save();
 
         }

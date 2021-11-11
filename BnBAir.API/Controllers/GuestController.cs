@@ -15,7 +15,7 @@ namespace BnBAir.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "guest")]
+   // [Authorize(Roles = "guest")]
     public class GuestController : ControllerBase
     {
         private readonly IServiceUW _service;
@@ -61,14 +61,9 @@ namespace BnBAir.API.Controllers
                     emptyRooms.Add(res.Room);
                 }
             }
-
-            foreach (var room in rooms)
-            {
-                if (!reservations.Exists(x => x.Room.RoomId == room.RoomId))
-                {
-                    emptyRooms.Add(room);
-                }
-            }
+            
+            emptyRooms.AddRange(rooms.Where(room => !reservations.Exists(x => x.Room.RoomId == room.RoomId)));
+            
             if (!emptyRooms.Any())
             {
                 return BadRequest($"Свободных комнат на дату {startDate} - {endDate} нет");
@@ -78,10 +73,24 @@ namespace BnBAir.API.Controllers
         }
         
         [HttpPost("booking")]
-        public async Task<IActionResult> BookRoom(ReservationViewModel reservation)
+        public IActionResult BookRoom(string firstName,string lastName,string patronymic,DateTime birthDate,string document, Guid roomId, DateTime startDate, DateTime endDate)
         {
+            var guest = new GuestViewModel()
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Patronymic = patronymic,
+                BirthDate = birthDate,
+                Document = document     
+            };
+            var reservation = new ReservationViewModel()
+            {
+                StartDate = startDate,
+                EndDate = endDate,
+                Guest = guest,
+            };
             var reservationDto = GetReservationMapper().Map<ReservationViewModel, ReservationDTO>(reservation);
-            _service.ReservationsDTO.Create(reservationDto);
+            _service.ReservationsDTO.Create(reservationDto, roomId);
             return Ok();
         }
         

@@ -30,7 +30,7 @@ namespace BnBAir.DAL.Repositories
             return await _dbSet.FindAsync(id);
         }
 
-        public async void Create(T item)
+        public virtual async void Create(T item, Guid? itemId)
         {
             await _dbSet.AddAsync(item);
             await _db.SaveChangesAsync();

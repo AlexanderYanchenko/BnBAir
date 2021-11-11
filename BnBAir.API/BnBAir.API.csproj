@@ -16,4 +16,8 @@
       <ProjectReference Include="..\BnBAir.IoC\BnBAir.IoC.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Interfaces" />
+    </ItemGroup>
+
 </Project>

@@ -89,7 +89,7 @@ namespace BnBAir.API.Controllers
         public async Task<IActionResult> AddRoom(RoomViewModel room)
         {
             var roomDto = GetRoomMapper().Map<RoomViewModel, RoomDTO>(room);
-            _service.RoomsDTO.Create(roomDto);
+            _service.RoomsDTO.Create(roomDto, null);
             return Ok("Комната добавлена успешно");
         }
         
@@ -119,7 +119,7 @@ namespace BnBAir.API.Controllers
         public async Task<IActionResult> AddCategory(CategoryViewModel category)
         {
             var categoryDto = GetCategoryMapper().Map<CategoryViewModel, CategoryDTO>(category);
-            _service.CategoriesDTO.Create( categoryDto);
+            _service.CategoriesDTO.Create( categoryDto, null);
             return Ok("Категория добавлена успешно");
         }
         
