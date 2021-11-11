@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BnBAir.DAL.EF;
@@ -22,5 +23,12 @@ namespace BnBAir.DAL.Repositories
                 .ThenInclude(x=>x.CategoryDates)
                 .ToListAsync();
         }
+         public override async void Create(Room room, Guid? itemId)
+         {
+            var category = _db.Categories.FirstOrDefaultAsync(x => x.CategoryId == itemId);
+            room.Category = await category;
+            await _db.Rooms.AddAsync(room);
+            await _db.SaveChangesAsync();
+         }
     }
 }
