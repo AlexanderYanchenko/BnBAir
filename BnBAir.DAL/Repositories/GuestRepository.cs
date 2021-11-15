@@ -18,6 +18,7 @@ namespace BnBAir.DAL.Repositories
         {
             return await _db.Guests
                          .Include(guest => guest.Reservations)
+                         .ThenInclude(reservation=>reservation.Room)
                          .ToListAsync();
         }
     }

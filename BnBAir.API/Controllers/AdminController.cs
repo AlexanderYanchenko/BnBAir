@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using BnBAir.API.Interfaces;
 using BnBAir.API.Models;
 using BnBAir.BLL.DTO;
 using BnBAir.BLL.Interfaces;
@@ -16,13 +17,12 @@ namespace BnBAir.API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     //[Authorize(Roles = "admin")]
-    public class AdminController : ControllerBase
+    public class AdminController : ControllerBase, IAdmin
     {
         private readonly IServiceUW _service;
-        private readonly IBnBAirUW _db;
-        public AdminController(IBnBAirUW db,IServiceUW service)
+
+        public AdminController(IServiceUW service)
         {
-            _db = db;
             _service = service;
         }
 
@@ -59,8 +59,8 @@ namespace BnBAir.API.Controllers
 
             try
             {
-                var guestReservation = GetReservationMapper()
-                    .Map<ReservationDTO, ReservationViewModel>(await _service.ReservationsDTO.GetById(id));
+                var guestReservation = GetGuestMapper()
+                    .Map<GuestDTO, GuestViewModel>(await _service.GuestsDTO.GetById(id));
                return Ok(guestReservation);
             }
             catch (Exception e)
@@ -224,8 +224,7 @@ namespace BnBAir.API.Controllers
 
         private static IMapper GetCategoryMapper()
         {
-            var mapper = new MapperConfiguration(cfg
-                    =>
+            var mapper = new MapperConfiguration(cfg=>
                 {
                     cfg.CreateMap<CategoryDTO, CategoryViewModel>()
                         .ForMember(x
@@ -238,7 +237,23 @@ namespace BnBAir.API.Controllers
                 .CreateMapper();
             return mapper;
         }
-        
+
+        private static IMapper GetGuestMapper()
+        {
+            var mapper = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<GuestDTO, GuestViewModel>().ForMember(x
+                    =>x.Reservations, opt
+                    =>opt.MapFrom(x=>x.Reservations))
+                    .ReverseMap();
+                cfg.CreateMap<ReservationDTO, ReservationViewModel>()
+                    .ForMember(x=>x.Room, 
+                        opt=> opt.MapFrom(x=>x.Room))
+                    .ReverseMap();
+                cfg.CreateMap<RoomDTO, RoomViewModel>().ReverseMap();
+            }).CreateMapper();
+            return mapper;
+        }
         #endregion
        
     }
