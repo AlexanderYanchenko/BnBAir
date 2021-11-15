@@ -52,21 +52,18 @@ namespace BnBAir.API.Controllers
         [HttpGet("guestmonitor")]
         public async Task<IActionResult> GuestMonitor(Guid id)
         {
-            if (string.IsNullOrEmpty(id.ToString()))
+            if (id == Guid.Empty)
             {
                 return BadRequest("Id пользователя не может быть пустым");
             }
-
-            try
+            
+            var guestReservation = GetGuestMapper()
+                .Map<GuestDTO, GuestViewModel>(await _service.GuestsDTO.GetById(id));
+            if (guestReservation == null)
             {
-                var guestReservation = GetGuestMapper()
-                    .Map<GuestDTO, GuestViewModel>(await _service.GuestsDTO.GetById(id));
-               return Ok(guestReservation);
+                return NotFound("Пользователь не найден");    
             }
-            catch (Exception e)
-            {
-                return BadRequest("Пользователь с таким Id не найден");
-            }
+            return Ok(guestReservation);
         }
 
         [HttpPost("changeparameters")]

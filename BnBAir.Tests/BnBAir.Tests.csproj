@@ -21,4 +21,8 @@
       <ProjectReference Include="..\BnBAir.DAL\BnBAir.DAL.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="TestInitialize" />
+    </ItemGroup>
+
 </Project>

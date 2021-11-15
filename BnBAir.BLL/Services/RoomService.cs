@@ -33,7 +33,7 @@ namespace BnBAir.BLL.Services
         public void Create(RoomDTO model, Guid? itemId)
         {
             var room = _mapper.Map<RoomDTO, Room>(model);
-            _db.Rooms.Create(room, null);
+            _db.Rooms.Create(room, itemId);
             _db.Save();
         }
 
