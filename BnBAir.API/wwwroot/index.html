@@ -6,15 +6,71 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
 </head>
 <body>
-    <table class="table" id="reservationTable">
-        <thead>
-        <tr>
-            <th>Имя</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        </tbody>
-    </table>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light ">
+            <a class="navbar-brand" href="rooms.html">BnBAir</a>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link active" href="rooms.html">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" href="#">Features</a>
+                    <a class="nav-item nav-link" href="#">Pricing</a>
+                </div>
+            </div>
+        </nav>
+        <table class="table table-striped" id="reservationTable">
+            <thead><tr><th>ФИО</th><th>Комната</th><th>Дата заселения</th><th>Дата выселения</th></tr></thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    
 </body>
+
+
+<script>
+    async function GetReservations() {
+// отправляет запрос и получаем ответ
+        const response = await fetch("/api/admin/monitoring", {
+            method: "GET",
+            headers: { "Accept": "application/json" }
+        });
+// если запрос прошел нормально
+        if (response.ok === true) {
+// получаем данные
+            const reservations = await response.json();
+            let rows = document.querySelector("tbody");
+            reservations.forEach(reservation => {
+// добавляем полученные элементы в таблицу
+                rows.append(row(reservation));
+            });
+        }
+    }
+
+    function row(reservation) {
+
+        const tr = document.createElement("tr");
+        tr.setAttribute("data-rowid", reservation.reservationId);
+
+        const nameTd = document.createElement("td");
+        nameTd.append(reservation.guest.firstName + ' ' + reservation.guest.lastName + ' ' + reservation.guest.patronymic);
+        tr.append(nameTd);
+
+        const roomTd = document.createElement("td");
+        roomTd.append(reservation.room.number);
+        tr.append(roomTd);
+
+        const checkInTd = document.createElement("td");
+        checkInTd.append(reservation.startDate);
+        tr.append(checkInTd);
+
+        const checkOutTd = document.createElement("td");
+        checkOutTd.append(reservation.endDate);
+        tr.append(checkOutTd);
+        return tr;
+    }
+
+    GetReservations()
+</script>
+
 </html>

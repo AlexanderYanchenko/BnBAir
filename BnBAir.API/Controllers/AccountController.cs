@@ -6,7 +6,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using BnBAir.API.AuthenticationOptions;
 using BnBAir.API.AuthenticationOptions.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
