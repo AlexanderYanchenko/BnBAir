@@ -25,9 +25,9 @@ namespace BnBAir.DAL.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T> GetById(Guid id)
+        public T GetById(Guid id)
         {
-            return await _dbSet.FindAsync(id);
+            return  _dbSet.Find(id);
         }
 
         public virtual async void Create(T item, Guid? itemId)
@@ -47,14 +47,10 @@ namespace BnBAir.DAL.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public async void Delete(Guid id)
+        public virtual void Delete(Guid id)
         {
-            var item = GetById(id);
-            if (item != null)
-            {
-                _dbSet.Remove(await item);
-            }
-            await _db.SaveChangesAsync();
+            _dbSet.Remove(GetById(id));
+            _db.SaveChanges();
         }
     }
 }

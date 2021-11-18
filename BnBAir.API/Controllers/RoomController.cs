@@ -13,7 +13,7 @@ namespace BnBAir.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "admin")]
+   // [Authorize(Roles = "admin")]
     public class RoomController : ControllerBase
     {
         private readonly IServiceUW _service;

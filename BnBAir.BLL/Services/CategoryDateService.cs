@@ -27,7 +27,7 @@ namespace BnBAir.BLL.Services
         public async Task<CategoryDateDTO> GetById(Guid id)
         {
             var mapper = CreateMapper();
-            return mapper.Map<CategoryDate, CategoryDateDTO>(await _db.CategoryDates.GetById(id));
+            return mapper.Map<CategoryDate, CategoryDateDTO>( _db.CategoryDates.GetById(id));
         }
         public void Create(CategoryDateDTO model, Guid? itemId)
         {

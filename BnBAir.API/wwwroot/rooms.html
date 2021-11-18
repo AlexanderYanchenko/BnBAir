@@ -4,18 +4,73 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-alpine.css">
 </head>
 <body>
-<div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light ">
-        <a class="navbar-brand" href="rooms.html">BnBAir</a>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="rooms.html">Home <span class="sr-only">(current)</span></a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="rooms.html">BnBAir</a>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                </ul>
+                <span class="navbar-text">
+                 </span>
             </div>
-        </div>
+        </div>    
     </nav>
-
-</div>
+    <div class="container">
+        <table class="table" id="roomsTable">
+            <thead><tr><th>Номер комнаты</th><th>Категория</th><th>Стоимость</th></tr></thead>
+            <tbody></tbody>
+        </table>
+        <div id="myGrid" class="ag-theme-alpine" style="height: 1000px; width:1000px"></div>
+    </div>
 </body>
+<script>
+   async function getRooms(){
+        const response = await fetch("/api/room/listofrooms" , {
+            method: "GET",
+            headers: { "Accept": "application/json" }
+        });
+       if (response.ok === true) {
+// получаем данные
+           const reservations = await response.json();
+           let rows = document.querySelector("tbody");
+           reservations.forEach(room => {
+// добавляем полученные элементы в таблицу
+               rows.append(row(room));
+           });
+       }
+    }
+
+   function row(room) {
+       const tr = document.createElement("tr");
+       tr.setAttribute("data-rowid", room.number);
+
+       const nameTd = document.createElement("td");
+       nameTd.append(room.number);
+       tr.append(nameTd);
+
+       const roomTd = document.createElement("td");
+       roomTd.append(room.category.name);
+       tr.append(roomTd);
+
+       const checkInTd = document.createElement("td");
+       checkInTd.append(room.category.categoryDates[0].price);
+       tr.append(checkInTd);
+       return tr;
+   }
+   getRooms()
+</script>
 </html>

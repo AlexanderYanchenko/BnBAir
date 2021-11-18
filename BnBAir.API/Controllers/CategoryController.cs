@@ -11,7 +11,7 @@ namespace BnBAir.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "admin")]
+   // [Authorize(Roles = "admin")]
     public class CategoryController : ControllerBase
     {
         private readonly IServiceUW _service;
@@ -25,6 +25,15 @@ namespace BnBAir.API.Controllers
         [HttpPost("addcategory")]
         public IActionResult AddCategory(string name, int countOfBed, Guid categoryDatesId)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                return BadRequest("Имя категории не может быть пустым");
+            }
+
+            if (countOfBed == 0)
+            {
+                return BadRequest("Количество кроватей не может быть равным нулю");
+            }
             var category = new CategoryViewModel()
             {
                 Name = name,
@@ -62,6 +71,10 @@ namespace BnBAir.API.Controllers
         public async Task<IActionResult> DeleteCategory(Guid id)
         {
             var category = _service.CategoriesDTO.GetById(id);
+            if (category == null)
+            {
+                return BadRequest("Категория не найдена");
+            }
             _service.CategoriesDTO.Delete(await category);
             return Ok("Категория удалена успешно");
         }

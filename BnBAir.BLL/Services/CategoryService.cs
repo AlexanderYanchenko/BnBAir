@@ -26,13 +26,13 @@ namespace BnBAir.BLL.Services
 
         public async Task<CategoryDTO>  GetById(Guid id)
         {
-            return _mapper.Map<Category, CategoryDTO>(await _db.Categories.GetById(id));
+            return _mapper.Map<Category, CategoryDTO>(_db.Categories.GetById(id));
         }
 
         public void Create(CategoryDTO model, Guid? itemId)
         {
             var category = _mapper.Map<CategoryDTO, Category>(model);
-            _db.Categories.Create(category, null);
+            _db.Categories.Create(category, itemId);
             _db.Save();
 
         }

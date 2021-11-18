@@ -27,7 +27,7 @@ namespace BnBAir.BLL.Services
 
         public async Task<RoomDTO> GetById(Guid id)
         {
-            return _mapper.Map<Room, RoomDTO>( await _db.Rooms.GetById(id));
+            return _mapper.Map<Room, RoomDTO>(  _db.Rooms.GetById(id));
         }
 
         public void Create(RoomDTO model, Guid? itemId)

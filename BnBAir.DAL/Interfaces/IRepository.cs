@@ -9,7 +9,7 @@ namespace BnBAir.DAL.Interfaces
     public interface IRepository<T> where T : class
     {
         Task<IEnumerable<T>> GetAll();
-        Task<T> GetById(Guid id);
+        T GetById(Guid id);
         void Create(T item, Guid? itemId);
         void Update(T item);
         void Delete(Guid id);

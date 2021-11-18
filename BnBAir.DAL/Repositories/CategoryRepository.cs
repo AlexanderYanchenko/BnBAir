@@ -33,5 +33,11 @@ namespace BnBAir.DAL.Repositories
             await _db.Categories.AddAsync(category);
             await _db.SaveChangesAsync();
         }
+        
+        public override void Delete(Guid id)
+        {
+            _db.Remove(GetById(id));
+            _db.SaveChanges();
+        }
     }
 }
