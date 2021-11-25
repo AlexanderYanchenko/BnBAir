@@ -30,10 +30,10 @@ namespace BnBAir.BLL.Services
             return _mapper.Map<Room, RoomDTO>(  _db.Rooms.GetById(id));
         }
 
-        public void Create(RoomDTO model, Guid? itemId)
+        public void Create(RoomDTO model, Guid itemId)
         {
             var room = _mapper.Map<RoomDTO, Room>(model);
-            _db.Rooms.Create(room, itemId);
+            _db.Rooms.Create(room,itemId);
             _db.Save();
         }
 

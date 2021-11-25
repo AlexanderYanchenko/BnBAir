@@ -32,11 +32,10 @@ namespace BnBAir.BLL.Services
             return _mapper.Map<Reservation, ReservationDTO>( _db.Reservations.GetById(id));
         }
         
-        public void Create(ReservationDTO model, Guid? itemId)
+        public void Create(ReservationDTO model, Guid itemId)
         {
             var reservation = _mapper.Map<ReservationDTO, Reservation>(model);
-            _db.Reservations.Create(reservation, itemId);
-            _db.Save();
+            _db.Reservations.Create(reservation,itemId);
         }
 
         public void Update(ReservationDTO model)

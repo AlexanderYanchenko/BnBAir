@@ -10,7 +10,7 @@ namespace BnBAir.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "guest")]
+   // [Authorize(Roles = "guest")]
     public class GuestController : ControllerBase
     {
         private readonly IServiceUW _service;
@@ -19,7 +19,7 @@ namespace BnBAir.API.Controllers
             _service = service;
         }
         
-        [HttpPost("booking")]
+        /*[HttpPost("booking")]
         public IActionResult BookRoom(string firstName,string lastName,string patronymic,DateTime birthDate,string document, Guid roomId, DateTime startDate, DateTime endDate)
         {
             var guest = new GuestViewModel()
@@ -39,7 +39,7 @@ namespace BnBAir.API.Controllers
             var reservationDto = GetReservationMapper().Map<ReservationViewModel, ReservationDTO>(reservation);
             _service.ReservationsDTO.Create(reservationDto, roomId);
             return Ok();
-        }
+        }*/
         
         #region Mappers
 

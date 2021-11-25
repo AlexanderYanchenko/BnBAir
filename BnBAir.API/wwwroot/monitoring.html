@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="bootstrap/css/modal.css">
+    <script src="bootstrap/js/modal.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark ">
@@ -21,7 +23,7 @@
 </nav>
     <div class="container">
        
-        <table class="table table-striped" id="reservationTable">
+        <table class="table table-hover" id="reservationTable">
             <thead><tr><th>ФИО</th><th>Комната</th><th>Дата заселения</th><th>Дата выселения</th></tr></thead>
             <tbody>
 
@@ -54,7 +56,7 @@
     function row(reservation) {
 
         const tr = document.createElement("tr");
-        tr.setAttribute("data-rowid", reservation.reservationId);
+        tr.setAttribute("data-reservationId", reservation.reservationId);
 
         const nameTd = document.createElement("td");
         nameTd.append(reservation.guest.firstName + ' ' + reservation.guest.lastName + ' ' + reservation.guest.patronymic);
@@ -73,7 +75,6 @@
         tr.append(checkOutTd);
         return tr;
     }
-
     GetReservations()
 </script>
 

@@ -1,0 +1,30 @@
+﻿@model List<ReservationModel>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+<div class="container">
+    <table class="table table-hover" id="reservationTable">
+        <thead>
+        <tr>
+            <th>ФИО</th>
+            <th>Комната</th>
+            <th>Дата заселения</th>
+            <th>Дата выселения</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var reservation in Model)
+        {
+            <tr>
+                <td>@reservation.Guest.FirstName  @reservation.Guest.LastName @reservation.Guest.Patronymic </td>
+                <td>@reservation.Room.Number</td>
+                <td>@reservation.StartDate.ToShortDateString()</td>
+                <td>@reservation.EndDate.ToShortDateString()</td>
+            </tr>
+        }
+        </tbody>
+          
+    </table>
+</div>

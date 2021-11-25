@@ -19,11 +19,12 @@ namespace BnBAir.DAL.Repositories
         
         public override async Task<IEnumerable<Room>> GetAll()
         {
-            return await _db.Rooms.Include(x=>x.Category)
+            return await _db.Rooms
+                .Include(x=>x.Category)
                 .ThenInclude(x=>x.CategoryDates)
                 .ToListAsync();
         }
-         public override async void Create(Room room, Guid? itemId)
+         public override async void Create(Room room, Guid itemId)
          {
             var category = _db.Categories.FirstOrDefaultAsync(x => x.CategoryId == itemId);
             room.Category = await category;

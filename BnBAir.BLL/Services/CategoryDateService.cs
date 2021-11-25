@@ -29,12 +29,12 @@ namespace BnBAir.BLL.Services
             var mapper = CreateMapper();
             return mapper.Map<CategoryDate, CategoryDateDTO>( _db.CategoryDates.GetById(id));
         }
-        public void Create(CategoryDateDTO model, Guid? itemId)
+        public void Create(CategoryDateDTO model, Guid itemId)
         {
             var mapper = CreateMapper();
 
             var categoryDate = mapper.Map<CategoryDateDTO, CategoryDate>(model);
-            _db.CategoryDates.Create(categoryDate, null);
+            _db.CategoryDates.Create(categoryDate,itemId);
         }
 
         public void Update(CategoryDateDTO model)

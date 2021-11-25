@@ -38,10 +38,10 @@ namespace BnBAir.BLL.Services
             _db.Save();
         }
 
-        public void Create(GuestDTO model, Guid? itemId)
+        public void Create(GuestDTO model, Guid itemId)
         {
             var guest = _mapper.Map<GuestDTO, Guest>(model);
-            _db.Guests.Create(guest, null);
+            _db.Guests.Create(guest,itemId);
             _db.Save();
         }
 

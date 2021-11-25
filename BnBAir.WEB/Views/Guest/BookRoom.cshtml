@@ -1,0 +1,45 @@
+﻿@model BnBAir.WEB.Models.ReservationModel
+
+@{
+    ViewBag.Title = "Бронирование номера";
+    Layout = "_Layout";
+}
+<form asp-action="BookRoom" asp-controller="Guest">
+    <div class="form-group">
+        <label asp-for="Guest.FirstName" >Имя</label>
+        <input type="text" asp-for="Guest.FirstName" class="form-control" placeholder="Иван">
+    </div>
+    <div class="form-group">
+        <label asp-for="Guest.Patronymic" >Отчество</label>
+        <input type="text" asp-for="Guest.Patronymic" class="form-control" placeholder="Иванович">
+    </div>
+    <div class="form-group">
+        <label asp-for="Guest.LastName" >Фамилия</label>
+        <input type="text" asp-for="Guest.LastName" class="form-control" placeholder="Иванов">
+    </div>
+    <div class="form-group">
+        <label asp-for="Guest.Document">Документ</label>
+        <input type="text" asp-for="Guest.Document" class="form-control" placeholder="MT12345">
+    </div>
+    <div class="form-group">
+        <label asp-for="Guest.BirthDate">Дата рождения</label>
+        <input type="date" asp-for="Guest.BirthDate" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="StartDate" >Дата заселения</label>
+        <input type="date" asp-for="StartDate" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="EndDate">Дата выселения</label>
+        <input type="date" asp-for="EndDate" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="Room.RoomId"></label>
+        <select asp-for="Room.RoomId" asp-items="ViewBag.Rooms" class="form-control">
+            <option selected>Выберите комнату</option>
+        </select>
+    </div>
+    <div>
+        <input type="submit" class="btn btn-primary" value="Забронировать">
+    </div>
+</form>

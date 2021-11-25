@@ -3,32 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using BnBAir.API.Models;
 using BnBAir.BLL.DTO;
 using BnBAir.BLL.Interfaces;
+using BnBAir.WEB.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace BnBAir.API.Controllers
+namespace BnBAir.WEB.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-   // [Authorize(Roles = "admin")]
-    public class RoomController : ControllerBase
+   public class RoomController : Controller
     {
         private readonly IServiceUW _service;
         public RoomController(IServiceUW service)
         {
             _service = service;
         }
-        [HttpGet("listofrooms")]
+        [HttpGet]
         public async Task<IActionResult> ListOfRooms()
         {
             var rooms = GetRoomMapper()
-                .Map<IEnumerable<RoomDTO>, List<RoomViewModel>>( await _service.RoomsDTO.Get());
-            return Ok(rooms);
+                .Map<IEnumerable<RoomDTO>, List<RoomModel>>( await _service.RoomsDTO.Get());
+            var sortedRooms = rooms.OrderBy(room => room.Number).ToList();
+            foreach (var room in sortedRooms)
+            {
+                room.Category.CategoryDates = room.Category.CategoryDates
+                    .Where(category => category.EndDate.Year <= DateTime.Now.Year).ToList();
+            }
+            return View(sortedRooms);
         }
-        [HttpGet("searchrooms")]
+        [HttpGet]
         public async Task<IActionResult> SearchRoomsForDate(DateTime startDate, DateTime endDate)
         {
             if (startDate > endDate)
@@ -36,10 +40,10 @@ namespace BnBAir.API.Controllers
                 return BadRequest("Дата заселения не может быть дальше, чем дата выселения");
             }
 
-            var emptyRooms = new List<RoomViewModel>();
+            var emptyRooms = new List<RoomModel>();
             var reservations = GetReservationMapper()
-                .Map<List<ReservationDTO>, List<ReservationViewModel>>(  await _service.ReservationsDTO.Get());
-            var rooms = GetRoomMapper().Map<List<RoomDTO>, List<RoomViewModel>>(await _service.RoomsDTO.Get());
+                .Map<List<ReservationDTO>, List<ReservationModel>>(  await _service.ReservationsDTO.Get());
+            var rooms = GetRoomMapper().Map<List<RoomDTO>, List<RoomModel>>(await _service.RoomsDTO.Get());
 
             foreach (var res in reservations)
             {
@@ -66,7 +70,7 @@ namespace BnBAir.API.Controllers
                 return BadRequest($"Свободных комнат на дату {startDate} - {endDate} нет");
             }
 
-            return Ok(emptyRooms);
+            return View(emptyRooms);
         }
         
         #region Add/Edit/Delete Room
@@ -76,11 +80,11 @@ namespace BnBAir.API.Controllers
         [Authorize(Roles = "admin")]
         public  IActionResult AddRoom(int number, Guid categoryId)
         {
-            var room = new RoomViewModel()
+            var room = new RoomModel()
             {
                 Number = number,
             };
-            var roomDto = GetRoomMapper().Map<RoomViewModel, RoomDTO>(room);
+            var roomDto = GetRoomMapper().Map<RoomModel, RoomDTO>(room);
             _service.RoomsDTO.Create(roomDto,categoryId);
             return Ok("Комната добавлена успешно");
         }
@@ -89,12 +93,12 @@ namespace BnBAir.API.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> EditRoom(Guid roomId, int? number, Guid? categoryId)
         {
-            var roomViewModel = GetRoomMapper().Map<RoomDTO, RoomViewModel>(await _service.RoomsDTO.GetById(roomId));
-            CategoryViewModel categoryViewModel = null;
+            var roomViewModel = GetRoomMapper().Map<RoomDTO, RoomModel>(await _service.RoomsDTO.GetById(roomId));
+            CategoryModel categoryViewModel = null;
             if (categoryId != null)
             {
                 categoryViewModel = GetCategoryMapper()
-                    .Map<CategoryDTO, CategoryViewModel>(await _service.CategoriesDTO.GetById((Guid) categoryId));
+                    .Map<CategoryDTO, CategoryModel>(await _service.CategoriesDTO.GetById((Guid) categoryId));
             }
             
             if (number != null)
@@ -103,7 +107,7 @@ namespace BnBAir.API.Controllers
             }
             
             roomViewModel.Category = categoryViewModel;
-            var roomDto = GetRoomMapper().Map<RoomViewModel, RoomDTO>(roomViewModel);
+            var roomDto = GetRoomMapper().Map<RoomModel, RoomDTO>(roomViewModel);
             _service.RoomsDTO.Update(roomDto);
             return Ok("Комната изменена успешно");
         }
@@ -112,8 +116,8 @@ namespace BnBAir.API.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteRoom(Guid id)
         {
-            var room = GetRoomMapper().Map<RoomDTO, RoomViewModel>( await _service.RoomsDTO.GetById(id));
-            var roomDto = GetRoomMapper().Map<RoomViewModel, RoomDTO>(room);
+            var room = GetRoomMapper().Map<RoomDTO, RoomModel>( await _service.RoomsDTO.GetById(id));
+            var roomDto = GetRoomMapper().Map<RoomModel, RoomDTO>(room);
             _service.RoomsDTO.Delete(roomDto);
             return Ok("Комната удалена успешно");
         }
@@ -127,7 +131,7 @@ namespace BnBAir.API.Controllers
             var mapper = new MapperConfiguration(cfg
                     =>
                 {
-                    cfg.CreateMap<ReservationDTO, ReservationViewModel>()
+                    cfg.CreateMap<ReservationDTO, ReservationModel>()
                         .ForMember(x
                             => x.Guest, opt
                             => opt.MapFrom(x => x.Guest))
@@ -135,17 +139,17 @@ namespace BnBAir.API.Controllers
                             => x.Room, opt
                             => opt.MapFrom(x => x.Room))
                         .ReverseMap();
-                    cfg.CreateMap<GuestDTO, GuestViewModel>().ReverseMap();
-                    cfg.CreateMap<RoomDTO, RoomViewModel>()
+                    cfg.CreateMap<GuestDTO, GuestModel>().ReverseMap();
+                    cfg.CreateMap<RoomDTO, RoomModel>()
                         .ForMember(x
                             =>x.Category,opt
                             =>opt.MapFrom(x=>x.Category))
                         .ReverseMap();
-                    cfg.CreateMap<CategoryDTO, CategoryViewModel>()
+                    cfg.CreateMap<CategoryDTO, CategoryModel>()
                         .ForMember(x=>x.CategoryDates, opt
                             =>opt.MapFrom(x=>x.CategoryDates))
                         .ReverseMap();
-                    cfg.CreateMap<CategoryDateDTO, CategoryDatesViewModel>().ReverseMap();
+                    cfg.CreateMap<CategoryDateDTO, CategoryDateModel>().ReverseMap();
                 })
                 .CreateMapper();
             return mapper;
@@ -156,15 +160,15 @@ namespace BnBAir.API.Controllers
             var mapper = new MapperConfiguration(cfg
                 =>
             {
-                cfg.CreateMap<RoomDTO, RoomViewModel>().ForMember(x
+                cfg.CreateMap<RoomDTO, RoomModel>().ForMember(x
                         =>x.Category,opt
                         =>opt.MapFrom(x=>x.Category))
                     .ReverseMap();
-                cfg.CreateMap<CategoryDTO, CategoryViewModel>().ForMember(x
+                cfg.CreateMap<CategoryDTO, CategoryModel>().ForMember(x
                     => x.CategoryDates, opt
                         =>opt.MapFrom(x=>x.CategoryDates))
                     .ReverseMap();
-                cfg.CreateMap<CategoryDateDTO, CategoryDatesViewModel>().ReverseMap();
+                cfg.CreateMap<CategoryDateDTO, CategoryDateModel>().ReverseMap();
             }).CreateMapper();
             return mapper;
         }
@@ -173,12 +177,12 @@ namespace BnBAir.API.Controllers
         {
             var mapper = new MapperConfiguration(cfg=>
                 {
-                    cfg.CreateMap<CategoryDTO, CategoryViewModel>()
+                    cfg.CreateMap<CategoryDTO, CategoryModel>()
                         .ForMember(x
                             => x.CategoryDates, opt
                             => opt.MapFrom(x => x.CategoryDates))
                         .ReverseMap();
-                    cfg.CreateMap<CategoryDateDTO, CategoryDatesViewModel>()
+                    cfg.CreateMap<CategoryDateDTO, CategoryDateModel>()
                         .ReverseMap();
                 })
                 .CreateMapper();

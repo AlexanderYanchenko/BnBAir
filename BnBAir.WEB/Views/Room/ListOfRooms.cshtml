@@ -1,0 +1,28 @@
+﻿@model System.Collections.Generic.List<BnBAir.WEB.Models.RoomModel>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<table class="table table-hover" id="reservationTable">
+        <thead>
+        <tr>
+            <th>Номер комнаты</th>
+            <th>Категория</th>
+            <th>Количество кроватей</th>
+            <th>Стоимость</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var room in Model)
+        {
+            <tr>
+                <td>@room.Number</td>
+                <td>@room.Category.Name</td>
+                <td>@room.Category.Bed</td>
+            </tr>
+        }
+        </tbody>
+          
+    </table>

@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+        <div class="container">
+            <a class="navbar-brand" href="rooms.html">BnBAir</a>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link active" href="rooms.html">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" href="#">Features</a>
+                    <a class="nav-item nav-link" href="#">Pricing</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <form name="userForm">
+            <input type="hidden" name="id" value="0" />
+            <div class="row">
+                <div class="col">
+                    <div class="form-group col-md-5">
+                        <label>
+                            Имя:
+                            <input class="form-control" name="firstName" placeholder="Иван" />
+                        </label>
+                    </div>
+                    <div class="form-group col-md-5 justify-content-between">
+                        <label>
+                            Фамилия:
+                            <input class="form-control" name="lastName" placeholder="Иванович" />
+                        </label>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label>
+                            Отчество:
+                            <input class="form-control" name="patronymic" placeholder="Иванов" />
+                        </label>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label>
+                            Документ:
+                            <input class="form-control" name="document" placeholder="МТ123456"/>
+                        </label>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label>
+                            Дата рождения:
+                            <input class="form-control"  type="date" name="birthDate" />
+                        </label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group col-md-5">
+                        <label for="">Выберите комнату:</label><select class="form-control" name="room" id="">
+                            <option value="value1" selected>Номер комнаты</option>
+                            <option value="value2" >Значение 2</option>
+                            <option value="value3">Значение 3</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label>Дата заселения:
+                            <input class="form-control"  type="date" name="startDate" />
+                        </label>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label>Дата выселения:
+                            <input class="form-control"  type="date" name="endDate" />
+                        </label>
+                    </div>
+                    <br>
+                    <div class="panel-body">
+                        <button type="submit" id="submit" class="btn btn-primary">Сохранить</button>
+                        <a id="reset" class="btn btn-primary">Сбросить</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+   
+</body>
+</html>

@@ -40,7 +40,7 @@ namespace BnBAir.API.Controllers
                 Bed = countOfBed
             };
             var categoryDto = GetCategoryMapper().Map<CategoryViewModel, CategoryDTO>(category);
-            _service.CategoriesDTO.Create( categoryDto, categoryDatesId);
+            _service.CategoriesDTO.Create( categoryDto,categoryDatesId);
             return Ok("Категория добавлена успешно");
         }
         

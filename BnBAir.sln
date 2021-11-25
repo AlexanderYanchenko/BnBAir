@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BnBAir.IoC", "BnBAir.IoC\Bn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BnBAir.API", "BnBAir.API\BnBAir.API.csproj", "{28E0DD8B-1C6F-4E30-A397-82145C2C780F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BnBAir.WEB", "BnBAir.WEB\BnBAir.WEB.csproj", "{543A2AF5-2128-4C00-8852-47D0EACDA31C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{28E0DD8B-1C6F-4E30-A397-82145C2C780F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28E0DD8B-1C6F-4E30-A397-82145C2C780F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28E0DD8B-1C6F-4E30-A397-82145C2C780F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{543A2AF5-2128-4C00-8852-47D0EACDA31C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{543A2AF5-2128-4C00-8852-47D0EACDA31C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{543A2AF5-2128-4C00-8852-47D0EACDA31C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{543A2AF5-2128-4C00-8852-47D0EACDA31C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
