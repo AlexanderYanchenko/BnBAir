@@ -31,9 +31,9 @@ namespace BnBAir.DAL.Repositories
 
         public IRepository<Room> Rooms => _roomRepository ??= new RoomRepository(_db);
         
-        public void Save()
+        public async void Save()
         {
-            this._db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
         
         public void Dispose()

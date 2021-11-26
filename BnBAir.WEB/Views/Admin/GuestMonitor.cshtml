@@ -1,0 +1,30 @@
+﻿@model List<GuestModel>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+
+<div class="container">
+    <table class="table table-hover" id="reservationTable">
+        <thead>
+        <tr>
+            <th>ФИО</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var reservation in Model)
+        {
+            <tr>
+                <td>
+                    <a href="GuestInfo/@reservation.GuestId">
+                         @reservation.FirstName @reservation.LastName @reservation.Patronymic
+                    </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+          
+    </table>
+</div>

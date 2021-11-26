@@ -26,11 +26,11 @@ namespace BnBAir.WEB.Controllers
             var rooms = GetRoomMapper()
                 .Map<IEnumerable<RoomDTO>, List<RoomModel>>( await _service.RoomsDTO.Get());
             var sortedRooms = rooms.OrderBy(room => room.Number).ToList();
-            /*foreach (var room in sortedRooms)
+            foreach (var room in sortedRooms)
             {
                 room.Category.CategoryDates = room.Category.CategoryDates
-                    .Where(category => category.EndDate.Year <= DateTime.Now.Year).ToList();
-            }*/
+                    .Where(category =>DateTime.Now.Year <= category.EndDate.Year ).ToList();
+            }
             return View(sortedRooms);
         }
         [HttpGet]

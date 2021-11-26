@@ -1,0 +1,21 @@
+﻿@model ReportModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Общее кол-во броней</th>
+        <th>Доход</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>@Model.CountOfReservations</th>
+        <th>@Model.TotalSum</th>
+    </tr>
+    </tbody>
+</table>

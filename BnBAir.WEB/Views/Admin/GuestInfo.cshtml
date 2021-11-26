@@ -1,0 +1,54 @@
+﻿@model GuestModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <h1>@Model.FirstName  @Model.LastName @Model.Patronymic</h1>
+    <h5>Документ: @Model.Document</h5>
+    <h5>Дата рождения: @Model.BirthDate</h5>
+    <h4>Список бронирований:</h4>
+    <div class="container">
+        <table class="table table-hover" id="reservationTable">
+            <thead>
+            <tr>
+                <th>Номер комнаты</th>
+                <th>Дата заезда</th>
+                <th>Дата выезда</th>
+                <th>Гость заехал в номер</th>
+                <th>Гость выехал из номера</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                @foreach (ReservationModel el in ViewBag.Reservations)
+                {
+                    <tr>
+                        <td>@el.Room.Number</td>
+                        <td>@el.StartDate.ToShortDateString()</td>
+                        <td>@el.EndDate.ToShortDateString()</td>
+                        @if (el.CheckIn)
+                        {
+                            <td>Да</td>
+                        }
+                        @if (el.CheckIn == false)
+                        {
+                            <td>Нет</td>
+                        }
+                        @if (el.CheckOut)
+                        {
+                            <td>Да</td>
+                        }
+                        @if (el.CheckOut == false)
+                        {
+                            <td>Нет</td>
+                        }
+                        <td><a href="ChangeParametersForGuestReservation/@el.ReservationId">Редактировать</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
