@@ -5,4 +5,43 @@
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<form method="get">
+    <div class="form-group row">
+        <div class="form-group col-md-5">
+            <label class="control-label" >Дата заселения</label>
+            <input type="date" name="startDate" class="form-control">
+        </div>
+        <div class="form-group col-md-5">
+            <label class="control-label" >Дата выселения</label>
+            <input type="date" name="endDate" class="form-control">
+        </div>
+        <div class="form-group col-md-2">
+            <label class="control-label">&nbsp;</label>
+            <input type="submit" value="Поиск по датам" class="btn btn-secondary form-control"/>
+        </div>
+    </div>
+    
+    
+    <table class="table table-hover" id="reservationTable">
+            <thead>
+            <tr>
+                <th>Номер комнаты</th>
+                <th>Категория</th>
+                <th>Количество кроватей</th>
+                <th>Стоимость</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var room in Model)
+            {
+                <tr>
+                    <td>@room.Number</td>
+                    <td>@room.Category.Name</td>
+                    <td>@room.Category.Bed</td>
+                    <td>@room.Category.CategoryDates.First().Price</td>
+                </tr>
+            }
+            </tbody>
+              
+        </table>
+</form>

@@ -15,6 +15,7 @@ namespace BnBAir.WEB.Controllers
    public class RoomController : Controller
     {
         private readonly IServiceUW _service;
+
         public RoomController(IServiceUW service)
         {
             _service = service;
@@ -25,11 +26,11 @@ namespace BnBAir.WEB.Controllers
             var rooms = GetRoomMapper()
                 .Map<IEnumerable<RoomDTO>, List<RoomModel>>( await _service.RoomsDTO.Get());
             var sortedRooms = rooms.OrderBy(room => room.Number).ToList();
-            foreach (var room in sortedRooms)
+            /*foreach (var room in sortedRooms)
             {
                 room.Category.CategoryDates = room.Category.CategoryDates
                     .Where(category => category.EndDate.Year <= DateTime.Now.Year).ToList();
-            }
+            }*/
             return View(sortedRooms);
         }
         [HttpGet]
@@ -63,14 +64,14 @@ namespace BnBAir.WEB.Controllers
                 }
             }
             
-            emptyRooms.AddRange(rooms.Where(room => !reservations.Exists(x => x.Room.RoomId == room.RoomId)));
+            emptyRooms.AddRange(rooms.Where(room => !reservations.Exists(x => x.Room.Number == room.Number)));
             
             if (!emptyRooms.Any())
             {
                 return BadRequest($"Свободных комнат на дату {startDate} - {endDate} нет");
             }
 
-            return View(emptyRooms);
+            return View(emptyRooms.GroupBy(x=>x.RoomId).Select(x=>x.FirstOrDefault()).ToList());
         }
         
         #region Add/Edit/Delete Room
