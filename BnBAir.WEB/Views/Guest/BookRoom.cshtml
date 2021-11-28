@@ -36,7 +36,7 @@
     <div class="form-group">
         <label asp-for="Room.RoomId">Номер комнаты</label>
         <select asp-for="Room.RoomId" asp-items="ViewBag.Rooms" class="form-control">
-            <option selected>Выберите комнату</option>
+            <option selected>@ViewBag.Room.ToString()</option>
         </select>
     </div>
     <div>

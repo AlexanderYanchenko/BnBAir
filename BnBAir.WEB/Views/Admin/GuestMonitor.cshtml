@@ -2,29 +2,21 @@
 
 @{
     ViewBag.Title = "title";
-    Layout = "_Layout";
+    Layout = "_AdminLayout";
 }
 
 
 <div class="container">
-    <table class="table table-hover" id="reservationTable">
-        <thead>
-        <tr>
-            <th>ФИО</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var reservation in Model)
-        {
-            <tr>
-                <td>
-                    <a href="GuestInfo/@reservation.GuestId">
-                         @reservation.FirstName @reservation.LastName @reservation.Patronymic
-                    </a>
-                </td>
-            </tr>
-        }
-        </tbody>
-          
-    </table>
+    @foreach (var reservation in Model)
+    {
+        <div class="card col-md-4 float-md-left" style="width: 19rem; margin-right: 3rem; margin-bottom: 3rem">
+            <div class="card-body">
+                <h5 class="card-title">@reservation.FirstName @reservation.LastName @reservation.Patronymic</h5>
+                <p class="card-text">Документ: @reservation.Document</p>
+                <p class="card-text">Дата рождения: @reservation.BirthDate.ToShortDateString()</p>
+                <a href="~/Admin/GuestInfo/@reservation.GuestId" class="btn btn-primary stretched-link">Просмотреть список бронирований</a>
+            </div>
+        </div>
+    }
 </div>
+

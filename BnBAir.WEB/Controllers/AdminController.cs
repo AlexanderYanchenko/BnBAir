@@ -42,7 +42,6 @@ namespace BnBAir.WEB.Controllers
         
         public async Task<IActionResult> GuestMonitor()
         {
-            
             var guests = GetGuestMapper().Map<List<GuestDTO>, List<GuestModel>>(await _service.GuestsDTO.Get());
             return View(guests);
         }

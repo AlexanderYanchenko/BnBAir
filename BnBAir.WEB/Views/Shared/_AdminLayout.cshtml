@@ -19,11 +19,14 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Room" asp-action="SearchRoomsForDate">Просмотреть комнаты</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="GuestMonitor">Просмотр гостей</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="GetReport">Просмотреть Отчёт</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Room" asp-action="ListOfRooms">Информация о комнатах</a>
+                    </li>                    
                 </ul>
             </div>
         </div>

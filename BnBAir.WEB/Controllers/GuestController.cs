@@ -18,8 +18,9 @@ namespace BnBAir.WEB.Controllers
             _service = service;
         }
 
-        public IActionResult BookRoom()
+        public IActionResult BookRoom(Guid id)
         {
+            ViewBag.Room = _service.RoomsDTO.GetById(id).Result.Number;
             var rooms = _service.RoomsDTO.Get();
             var sortedRooms = rooms.Result.OrderByDescending(r => r.RoomId);
             ViewBag.Rooms = new SelectList(sortedRooms, "RoomId", "Number");
