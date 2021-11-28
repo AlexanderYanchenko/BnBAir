@@ -10,7 +10,7 @@ namespace BnBAir.DAL.Interfaces
     {
         Task<IEnumerable<T>> GetAll();
         T GetById(Guid id);
-        void Create(T item, Guid itemId);
+        void Create(T item, Guid? itemId);
         void Update(T item);
         void Delete(Guid id);
     }

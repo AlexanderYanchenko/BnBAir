@@ -74,11 +74,13 @@ namespace BnBAir.WEB.Controllers
             return View(emptyRooms.GroupBy(x=>x.RoomId).Select(x=>x.FirstOrDefault()).ToList());
         }
         
+        
+        
         #region Add/Edit/Delete Room
         
         
         [HttpPost("addroom")]
-        [Authorize(Roles = "admin")]
+       // [Authorize(Roles = "admin")]
         public  IActionResult AddRoom(int number, Guid categoryId)
         {
             var room = new RoomModel()
@@ -91,7 +93,7 @@ namespace BnBAir.WEB.Controllers
         }
         
         [HttpPost("editroom")]
-        [Authorize(Roles = "admin")]
+       // [Authorize(Roles = "admin")]
         public async Task<IActionResult> EditRoom(Guid roomId, int? number, Guid? categoryId)
         {
             var roomViewModel = GetRoomMapper().Map<RoomDTO, RoomModel>(await _service.RoomsDTO.GetById(roomId));
@@ -114,7 +116,7 @@ namespace BnBAir.WEB.Controllers
         }
         
         [HttpPost("deleteroom")]
-        [Authorize(Roles = "admin")]
+      //  [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteRoom(Guid id)
         {
             var room = GetRoomMapper().Map<RoomDTO, RoomModel>( await _service.RoomsDTO.GetById(id));

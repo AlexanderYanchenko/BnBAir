@@ -24,7 +24,7 @@ namespace BnBAir.DAL.Repositories
                 .ThenInclude(x=>x.CategoryDates)
                 .ToListAsync();
         }
-         public override async void Create(Room room, Guid itemId)
+         public override async void Create(Room room, Guid? itemId)
          {
             var category = _db.Categories.FirstOrDefaultAsync(x => x.CategoryId == itemId);
             room.Category = await category;

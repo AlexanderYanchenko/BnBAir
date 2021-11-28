@@ -26,7 +26,7 @@ namespace BnBAir.DAL.Repositories
             
         }
         
-        public override async void Create(Category category, Guid itemId)
+        public override async void Create(Category category, Guid? itemId)
         {
             var categoryDate = _db.CategoryDates.FirstOrDefaultAsync(x => x.CategoryDateId == itemId);
             category.CategoryDates.Add(await categoryDate);
