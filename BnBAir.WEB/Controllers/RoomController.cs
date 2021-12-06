@@ -8,6 +8,7 @@ using BnBAir.BLL.Interfaces;
 using BnBAir.WEB.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BnBAir.WEB.Controllers
@@ -77,26 +78,42 @@ namespace BnBAir.WEB.Controllers
         
         
         #region Add/Edit/Delete Room
-        
+
+
+        public async Task<IActionResult> AddRoom()
+        {
+            var categories = GetCategoryMapper()
+                .Map<List<CategoryDTO>, List<CategoryModel>>( await _service.CategoriesDTO.Get());
+            ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");
+            return View();
+        }
         
         [HttpPost("addroom")]
        // [Authorize(Roles = "admin")]
-        public  IActionResult AddRoom(int number, Guid categoryId)
+        public IActionResult AddRoom(int number, Guid categoryId)
         {
             var room = new RoomModel()
             {
                 Number = number,
+               // Category = GetCategoryMapper().Map<CategoryDTO,CategoryModel>(await _service.CategoriesDTO.GetById(categoryId))
             };
             var roomDto = GetRoomMapper().Map<RoomModel, RoomDTO>(room);
             _service.RoomsDTO.Create(roomDto,categoryId);
-            return Ok("Комната добавлена успешно");
+            return RedirectToAction("ListOfRooms");
         }
-        
-        [HttpPost("editroom")]
+
+       public async Task<IActionResult> EditRoom(Guid id)
+       {
+           var room = GetRoomMapper().Map<RoomDTO, RoomModel>(await _service.RoomsDTO.GetById(id));
+           var categories = GetCategoryMapper().Map<List<CategoryDTO>, List<CategoryModel>>(await _service.CategoriesDTO.Get()) ;
+           ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");
+           return View(room);
+       }
+        [HttpPost]
        // [Authorize(Roles = "admin")]
-        public async Task<IActionResult> EditRoom(Guid roomId, int? number, Guid? categoryId)
+        public async Task<IActionResult> EditRoom(Guid id, int? number, Guid? categoryId)
         {
-            var roomViewModel = GetRoomMapper().Map<RoomDTO, RoomModel>(await _service.RoomsDTO.GetById(roomId));
+            var roomViewModel = GetRoomMapper().Map<RoomDTO, RoomModel>(await _service.RoomsDTO.GetById(id));
             CategoryModel categoryViewModel = null;
             if (categoryId != null)
             {
@@ -112,7 +129,7 @@ namespace BnBAir.WEB.Controllers
             roomViewModel.Category = categoryViewModel;
             var roomDto = GetRoomMapper().Map<RoomModel, RoomDTO>(roomViewModel);
             _service.RoomsDTO.Update(roomDto);
-            return Ok("Комната изменена успешно");
+            return RedirectToAction("ListOfRooms");
         }
         
         [HttpPost("deleteroom")]
@@ -122,7 +139,7 @@ namespace BnBAir.WEB.Controllers
             var room = GetRoomMapper().Map<RoomDTO, RoomModel>( await _service.RoomsDTO.GetById(id));
             var roomDto = GetRoomMapper().Map<RoomModel, RoomDTO>(room);
             _service.RoomsDTO.Delete(roomDto);
-            return Ok("Комната удалена успешно");
+            return RedirectToAction("ListOfRooms");
         }
         
         #endregion
@@ -184,8 +201,12 @@ namespace BnBAir.WEB.Controllers
                         .ForMember(x
                             => x.CategoryDates, opt
                             => opt.MapFrom(x => x.CategoryDates))
+                        .ForMember(x=>x.Rooms, opt
+                            =>opt.MapFrom(x=>x.Rooms))
                         .ReverseMap();
                     cfg.CreateMap<CategoryDateDTO, CategoryDateModel>()
+                        .ReverseMap();
+                    cfg.CreateMap<RoomDTO, RoomModel>()
                         .ReverseMap();
                 })
                 .CreateMapper();

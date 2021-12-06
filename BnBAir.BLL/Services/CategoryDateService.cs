@@ -13,28 +13,27 @@ namespace BnBAir.BLL.Services
     public class CategoryDateService : IService<CategoryDateDTO>
     {
         private readonly IBnBAirUW _db;
+        private readonly IMapper _mapper = CreateMapper();
         public CategoryDateService(IBnBAirUW db)
         {
             this._db = db;
         }
         
+
         public async Task< List<CategoryDateDTO>> Get()
         {
-            var mapper = CreateMapper();
-            return mapper.Map<IEnumerable<CategoryDate>, List<CategoryDateDTO>>( await _db.CategoryDates.GetAll());
+            return _mapper.Map<IEnumerable<CategoryDate>, List<CategoryDateDTO>>( await _db.CategoryDates.GetAll());
         }
 
         public async Task<CategoryDateDTO> GetById(Guid id)
         {
-            var mapper = CreateMapper();
-            return mapper.Map<CategoryDate, CategoryDateDTO>( _db.CategoryDates.GetById(id));
+            var testId = await _db.CategoryDates.GetById(id);
+            return _mapper.Map<CategoryDate, CategoryDateDTO>(testId);
         }
         public void Create(CategoryDateDTO model, Guid itemId)
         {
-            var mapper = CreateMapper();
-
-            var categoryDate = mapper.Map<CategoryDateDTO, CategoryDate>(model);
-            _db.CategoryDates.Create(categoryDate,itemId);
+            var categoryDate = _mapper.Map<CategoryDateDTO, CategoryDate>(model);
+            _db.CategoryDates.Create(categoryDate, itemId);
         }
 
         public void Update(CategoryDateDTO model)
@@ -55,7 +54,15 @@ namespace BnBAir.BLL.Services
         private static IMapper CreateMapper()
         {
              var mapper = new MapperConfiguration(cfg
-                => cfg.CreateMap<CategoryDate, CategoryDateDTO>()).CreateMapper();
+                =>
+             {
+                 cfg.CreateMap<CategoryDate, CategoryDateDTO>()
+                     .ForMember(x =>x.Category,
+                         opt=>opt.MapFrom(x=>x.Category))
+                     .ReverseMap();
+                 cfg.CreateMap<Category, CategoryDTO>()
+                     .ReverseMap();
+             }).CreateMapper();
              return mapper;
         }
 

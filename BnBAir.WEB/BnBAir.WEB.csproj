@@ -12,6 +12,9 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Pages\Guest\BookRoom.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\Room\SearchRoomsForDate.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\CategoryDates\AddCategoryDate.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\CategoryDates\EditCategoryDate.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\CategoryDates\ListOfCategoryDates.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

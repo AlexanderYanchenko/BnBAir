@@ -29,7 +29,7 @@ namespace BnBAir.BLL.Services
 
         public async Task<ReservationDTO> GetById(Guid id)
         {
-            return _mapper.Map<Reservation, ReservationDTO>( _db.Reservations.GetById(id));
+            return _mapper.Map<Reservation, ReservationDTO>( await _db.Reservations.GetById(id));
         }
         
         public void Create(ReservationDTO model, Guid itemId)

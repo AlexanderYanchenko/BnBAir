@@ -4,7 +4,9 @@
     ViewBag.Title = "title";
     Layout = "_AdminLayout";
 }
-<a href=""></a>
+
+<div class="container">
+<a href="~/Room/AddRoom/">Добавить новую комнату</a>
 <table class="table table-hover" id="reservationTable">
         <thead>
         <tr>
@@ -12,6 +14,7 @@
             <th>Категория</th>
             <th>Количество кроватей</th>
             <th>Стоимость</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -22,8 +25,13 @@
                 <td>@room.Category.Name</td>
                 <td>@room.Category.Bed</td>
                 <td>@room.Category.CategoryDates.First().Price</td>
+                <td>
+                    <a href="~/Room/EditRoom/@room.RoomId" class="btn btn-outline-primary btn-sm">Изменить</a>&nbsp;|&nbsp;<a href="~/Room/DeleteRoom/@room.RoomId" class="btn btn-outline-danger btn-sm">Удалить</a>
+                </td>
             </tr>
         }
         </tbody>
-          
-    </table>
+        
+    </table>    
+</div>
+

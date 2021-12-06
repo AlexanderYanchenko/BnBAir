@@ -27,7 +27,6 @@ namespace BnBAir.BLL.Services
 
         public void Dispose()
         {
-            throw new System.NotImplementedException();
         }
 
        

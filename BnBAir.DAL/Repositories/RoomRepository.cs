@@ -26,8 +26,8 @@ namespace BnBAir.DAL.Repositories
         }
          public override async void Create(Room room, Guid? itemId)
          {
-            var category = _db.Categories.FirstOrDefaultAsync(x => x.CategoryId == itemId);
-            room.Category = await category;
+            var category = _db.Categories.FirstOrDefaultAsync(x => x.CategoryId == itemId).Result;
+            room.Category = category;
             await _db.Rooms.AddAsync(room);
             await _db.SaveChangesAsync();
          }

@@ -20,15 +20,9 @@ namespace BnBAir.DAL.Repositories
             _dbSet = dbSet;
         }
 
-        public virtual async Task<IEnumerable<T>> GetAll()
-        {
-            return await _dbSet.ToListAsync();
-        }
+        public virtual async Task<IEnumerable<T>> GetAll() => await _dbSet.ToListAsync();
 
-        public T GetById(Guid id)
-        {
-            return  _dbSet.Find(id);
-        }
+        public virtual async Task<T> GetById(Guid id) => await _dbSet.FindAsync(id);
 
         public virtual async void Create(T item, Guid? itemId)
         {
@@ -36,21 +30,19 @@ namespace BnBAir.DAL.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public async void Update(T item)
+        public  void Update(T item)
         {
-            if (item != null)
-            {
-                _db.Entry(item).State = EntityState.Deleted;
-            }
 
-            if (item != null) _db.Entry(item).State = EntityState.Added;
-            await _db.SaveChangesAsync();
+            _db.Entry(item).State = EntityState.Deleted;
+            _db.Entry(item).State = EntityState.Added;
+            _db.SaveChanges();
+
         }
 
-        public virtual void Delete(Guid id)
+        public virtual async void Delete(Guid id)
         {
-            _dbSet.Remove(GetById(id));
-            _db.SaveChanges();
+            _dbSet.Remove( await GetById(id));
+            await _db.SaveChangesAsync();
         }
     }
 }

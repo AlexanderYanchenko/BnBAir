@@ -71,17 +71,19 @@ namespace BnBAir.WEB.Controllers
             return View(reservation);
         }
         [HttpPost]
-        public async Task<IActionResult> ChangeParametersForGuestReservation(Guid id, bool? checkIn, bool? checkOut)
+        public async Task<IActionResult> ChangeParametersForGuestReservation(Guid id,DateTime? startDate, DateTime? endDate, bool? checkIn, bool? checkOut)
         {
             
             var reservation = GetReservationMapper().Map<ReservationDTO, ReservationModel>(await _service.ReservationsDTO.GetById(id));
+            if (startDate != null) reservation.StartDate = (DateTime) startDate;
+            if (endDate != null) reservation.EndDate = (DateTime) endDate;
             if (checkIn != null) reservation.CheckIn = (bool) checkIn;
             if (checkOut != null) reservation.CheckOut = (bool) checkOut;
 
 
             var reversedReservation = GetReservationMapper().Map<ReservationModel, ReservationDTO>(reservation);
             _service.ReservationsDTO.Update(reversedReservation);
-            return RedirectToAction(GuestMonitor().ToString());
+            return RedirectToAction("GuestMonitor");
         }
         private static IMapper GetReservationMapper()
         {

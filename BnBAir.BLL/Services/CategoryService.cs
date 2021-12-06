@@ -19,14 +19,14 @@ namespace BnBAir.BLL.Services
             _db = db;
         }
         
-        public async Task<List<CategoryDTO>>  Get()
+        public async Task<List<CategoryDTO>> Get()
         {
             return _mapper.Map<IEnumerable<Category>, List<CategoryDTO>>( await _db.Categories.GetAll());
         }
 
         public async Task<CategoryDTO>  GetById(Guid id)
         {
-            return _mapper.Map<Category, CategoryDTO>(_db.Categories.GetById(id));
+            return _mapper.Map<Category, CategoryDTO>(await _db.Categories.GetById(id));
         }
 
         public void Create(CategoryDTO model, Guid itemId)
@@ -60,9 +60,12 @@ namespace BnBAir.BLL.Services
                         .ForMember(x
                             => x.CategoryDates, opt
                             => opt.MapFrom(x => x.CategoryDates))
+                        .ForMember(x=>x.Rooms, opt
+                        =>opt.MapFrom(x=>x.Rooms))
                         .ReverseMap();
                     cfg.CreateMap<CategoryDate, CategoryDateDTO>()
                         .ReverseMap();
+                    cfg.CreateMap<Room, RoomDTO>().ReverseMap();
                 })
                 .CreateMapper();
             return mapper;
